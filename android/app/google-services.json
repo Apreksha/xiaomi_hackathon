@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "591137994222",
+    "project_id": "xiaomi-hackathon",
+    "storage_bucket": "xiaomi-hackathon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591137994222:android:58f0e0508ddba34a7e8aff",
+        "android_client_info": {
+          "package_name": "com.xiaomi.hackathon.xiaomi_hackathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591137994222-6lvibk55gl6v4ev99rm4qh8k4sau9ueo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDG2PKnX99YDpbgEUmVpJg1cIveLUlDEFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591137994222-6lvibk55gl6v4ev99rm4qh8k4sau9ueo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

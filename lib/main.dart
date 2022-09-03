@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/Screens/Categories/categories_main_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:xiaomi_hackathon/Screens/LoginScreen.dart';
+import 'package:xiaomi_hackathon/Screens/SplashScreen.dart';
 
 late int initScreen;
 Future<void> main() async {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Categories_Main_Page()
+        home: MyCustomLoginUI()
     );
   }
 }

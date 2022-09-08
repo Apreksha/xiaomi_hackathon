@@ -1,8 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/Screens/Categories/categories_main_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:xiaomi_hackathon/Screens/Checkout/checkout.dart';
+import 'package:xiaomi_hackathon/Screens/OrderHistory/order_history.dart';
+import 'package:xiaomi_hackathon/Screens/PaymentSuccess/email.dart';
+import 'package:xiaomi_hackathon/Screens/filladdress.dart';
+import 'package:xiaomi_hackathon/Screens/payment.dart';
+import 'package:xiaomi_hackathon/Screens/PaymentSuccess/payment_success.dart';
+import 'package:xiaomi_hackathon/Screens/PaymentSuccess/whatsapp.dart';
 
-late int initScreen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -19,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Categories_Main_Page()
+        home: Checkout()
     );
   }
 }

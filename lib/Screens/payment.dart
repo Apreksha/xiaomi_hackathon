@@ -12,7 +12,7 @@ class _PaymentState extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         shadowColor: Colors.transparent,
         leading: IconButton(
@@ -44,9 +44,7 @@ class _PaymentState extends State<Payment> {
                     child: Row(
                       children: [
                         Text('Details', style: TextStyle(color: Colors.orange)),
-                        //SizedBox(width: 5,),
                         Icon(Icons.keyboard_arrow_down, color: Colors.orange,),
-                        //SizedBox(width: 6,)
                       ],
                     ),
                     onTap: (){
@@ -67,34 +65,34 @@ class _PaymentState extends State<Payment> {
               width: MediaQuery.of(context).size.width,
               child: Text('Choose a payment method', style: TextStyle(color: Colors.grey.shade700, fontSize: 18),),
             ),
-            options('Credit / Debit Card'),
-            options('UPI'),
-            options('Wallet'),
-            options('Cash On Delivery'),
-            SizedBox(height: 20,)
+            options('Credit / Debit Card','card'),
+            options('UPI', 'upi'),
+            options('PayTM Wallet', 'paytm'),
+            options('Cash On Delivery', 'payOnDelivery'),
           ],
         ),
       ),
     );
   }
 
-  GestureDetector options(String option){
+  GestureDetector options(String option, String icon){
     return GestureDetector(
       child: Container(
           decoration: BoxDecoration(
               color: Colors.white,
-              border: Border.all(color: Colors.orangeAccent.shade100),
+              border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(10)
           ),
           height: 70,
-          margin: EdgeInsets.only(left:10, right:10, top: 10),
+          margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(10),
           width: MediaQuery.of(context).size.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              Image.asset('assets/icons/$icon.png', height: 50, width: 50,),
               Text(option, style: TextStyle(fontSize: 18),),
-              Icon(Icons.arrow_forward_ios)
+              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios))
             ],
           )
       ),

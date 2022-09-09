@@ -10,72 +10,43 @@ class FillAddress extends StatefulWidget {
 class _FillAddressState extends State<FillAddress> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey,
-      child: Scaffold(
-        backgroundColor: Colors.grey.shade100,
-        body: SingleChildScrollView(
+    var width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      appBar: buildAppBar(context),
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.only(left: 15, right: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                margin: EdgeInsets.all(10),
-                child: Text('Please make sure your address is accurate. It cannot be changed once order is placed.',
-                  style: TextStyle(color: Colors.grey.shade700),),
+              SizedBox(height: 10,),
+              TextField(
+                keyboardType: TextInputType.streetAddress,
+                maxLines: 2,
+                decoration: InputDecoration(
+                    labelText: 'Address',
+                  
+                ),
               ),
-              SizedBox(height: 5,),
-              heading('Name'),
-              textfield('Name'),
-              heading('Pincode'),
-              textfield('Pincode'),
-              heading('Address'),
-              textfield('Address'),
-              heading('City'),
-              textfield('City'),
-              heading('State'),
-              textfield('State'),
-              heading('Email'),
-              textfield('Email'),
-              heading('Phone'),
-              textfield('+91 Phone Number'),
-
-              Row(
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 15),
-                      child: Text('Use as default',
-                        style: TextStyle(
-                            fontSize: 18
-                        ),)),
-                  //toggle button
-                ],
+              TextFormField(
+                decoration: InputDecoration(
+                    labelText: 'City'
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                    labelText: 'State'
+                ),
+              ),
+              TextFormField(
+                maxLength: 6,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: 'Pincode'
+                ),
               ),
               SizedBox(height: 10,),
-              GestureDetector(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.all(10),
-                    height: 50,
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Center(
-                      child: Text('SAVE',textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                          color: Colors.orange
-                        ),),
-                    )),
-                onTap: (){
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text("Saved"),
-                    duration: Duration(seconds: 3),));
-                  Navigator.of(context).pop();
-                },
-              )
+              saveButton(width)
             ],
           ),
         ),
@@ -83,31 +54,44 @@ class _FillAddressState extends State<FillAddress> {
     );
   }
 
-  Container heading(String s){
-    return Container(
-        margin: EdgeInsets.only(left: 15),
-        child: Text(s,
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-
-          ),));
-  }
-
-  Container textfield(String s){
-    return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(5),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10)
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-            hintText: s,
-            border: InputBorder.none
+  InkWell saveButton(var width){
+    return InkWell(
+      onTap: (){
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Saved"),
+          duration: Duration(seconds: 3),));
+        Navigator.of(context).pop();
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(width*0.45,20,10,10),
+        height: 60,
+        width: 150,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.orange,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Text('Save',
+            style: TextStyle(
+                fontSize: 18
+            ),),
         ),
       ),
+    ) ;
+  }
+
+  AppBar buildAppBar(BuildContext context){
+    return AppBar(
+        backgroundColor: Colors.orange,
+        elevation: 0,
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.black,), onPressed: (){
+          Navigator.of(context).pop();
+        },),
+        title: Text('Delivery Information',
+          style: TextStyle(
+              color: Colors.black
+          ),)
     );
   }
 }

@@ -17,15 +17,20 @@ class _CartCounterState extends State<CartCounter> {
         SizedBox(
           height: 32,
           width: 40,
-          child: OutlinedButton(
-            onPressed: () {
+          child: InkWell(
+            onTap: () {
               setState(() {
                 if(numOfItems>1) {
                   numOfItems--;
                 }
               });
             },
-            child: Icon(Icons.remove, color: Colors.grey,),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(5)
+              ),
+              child: Icon(Icons.remove, color: Colors.grey,)),
           ),
         ),
         Padding(
@@ -36,15 +41,18 @@ class _CartCounterState extends State<CartCounter> {
         SizedBox(
           height: 32,
           width: 40,
-          child: OutlinedButton(
-            style: ButtonStyle(
-            ),
-            onPressed: () {
+          child: InkWell(
+            onTap: () {
               setState(() {
                 numOfItems++;
               });
             },
-            child: Icon(Icons.add, color: Colors.grey,),
+            child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5)
+                ),
+                child: Icon(Icons.add, color: Colors.grey,)),
           ),
         ),
       ],

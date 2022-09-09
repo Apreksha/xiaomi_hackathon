@@ -14,6 +14,7 @@ class _CartBodyState extends State<CartBody> {
   Widget build(BuildContext context) {
     var size=MediaQuery.of(context).size;
     return Container(
+      color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: (10 / 375.0) * size.width),
       child: ListView.builder(
         itemCount: 2,
@@ -26,7 +27,7 @@ class _CartBodyState extends State<CartBody> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Color(0xFFFFE6E6),
-                borderRadius: BorderRadius.circular(5)
+                borderRadius: BorderRadius.circular(20)
               ),
               child: Image.asset("assets/icons/trash.png"),
             ),

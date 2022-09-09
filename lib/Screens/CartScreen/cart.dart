@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/Screens/CartScreen/cart_body.dart';
+import 'package:xiaomi_hackathon/Screens/Checkout/checkout.dart';
+import 'package:xiaomi_hackathon/Screens/customerInformation.dart';
 import 'package:xiaomi_hackathon/constants.dart';
 
 class Cart extends StatelessWidget {
@@ -40,6 +42,7 @@ class Cart extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   padding: EdgeInsets.all(10),
@@ -51,9 +54,13 @@ class Cart extends StatelessWidget {
                   ),
                   child: Image.asset("assets/icons/receipt.png"),
                 ),
-                /*Text('Add Voucher Code'),
-                const SizedBox(width: 10,),
-                Icon(Icons.arrow_forward_ios, size: 12, color: kTextColor,)*/
+                Row(
+                  children: [
+                    Text('Add Voucher Code'),
+                    const SizedBox(width: 10,),
+                    Icon(Icons.arrow_forward_ios, size: 12, color: kTextColor,),
+                  ],
+                )
               ],
             ),
             SizedBox(height: (20 / 375.0) * size.height,),
@@ -72,12 +79,22 @@ class Cart extends StatelessWidget {
                       )
                     ]
                 )),
-                SizedBox(
-                  width: (190 / 375.0) * size.width,
-                  child: ElevatedButton(
-                    child: Text('Check Out'),
-                    onPressed: (){},
-                  ),
+                InkWell(
+                  child: Container(
+                    height: 50,
+                    width: 140,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(5)
+                    ),
+                    child: Center(child: Text('Check Out',
+                      style: TextStyle(
+                        fontSize: 20,
+                        //fontWeight: FontWeight.bold
+                      ),))),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CustomerInformation()));
+                  },
                 )
               ],
             )
@@ -89,6 +106,11 @@ class Cart extends StatelessWidget {
 
   AppBar buildAppBar(BuildContext context){
     return AppBar(
+      backgroundColor: Colors.orange,
+      elevation: 0,
+      leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.black,), onPressed: (){
+        Navigator.of(context).pop();
+      },),
       title: Column(
         children: [
           Text('Your Cart',

@@ -3,11 +3,11 @@ import 'package:xiaomi_hackathon/constants.dart';
 
 class ColorDot extends StatelessWidget {
   final Color color;
-  final bool isSelected;
+  //final bool isSelected;
   const ColorDot({
     Key? key,
     required this.color,
-    this.isSelected=false
+    //this.isSelected=false
   }) : super(key: key);
 
   @override
@@ -20,12 +20,7 @@ class ColorDot extends StatelessWidget {
           top: kDefaultPaddin/4,
           right: kDefaultPaddin/2
       ),
-      decoration: BoxDecoration(
-          border:Border.all(
-            color: isSelected ? color : Colors.transparent,
-          ),
-          shape: BoxShape.circle
-      ),
+
       child: DecoratedBox(decoration: BoxDecoration(
           color: color,
           shape: BoxShape.circle

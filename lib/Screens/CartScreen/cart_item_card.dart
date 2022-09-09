@@ -10,7 +10,7 @@ class CartItemCard extends StatefulWidget {
 }
 
 class _CartItemCardState extends State<CartItemCard> {
-  int qty=1;
+  int qty=1, price = 25999;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class _CartItemCardState extends State<CartItemCard> {
           maxLines: 2,),
         const SizedBox(height: 10,),
         Text.rich(TextSpan(
-            text: "₹25,999",
+            text: (price*qty).toString(),
             style: TextStyle(
                 color: kPrimaryColor
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/Checkout/checkout.dart';
 import 'package:xiaomi_hackathon/MobileScreens/CustomerInformation/choiceOfBusinessCommunication.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
-import 'package:xiaomi_hackathon/MobileScreens/database.dart';
+import 'package:xiaomi_hackathon/MobileScreens/productDB.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomerInformation extends StatefulWidget {

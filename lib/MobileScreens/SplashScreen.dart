@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen>
                         fontSize: animation1.value,
                       ),
                     ),
-                    Text('Innovation for everone',
+                    Text('Innovation for everyone',
                       style: TextStyle(
                         color: Colors.grey,
                           fontSize: 12

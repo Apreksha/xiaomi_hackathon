@@ -1,5 +1,7 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:xiaomi_hackathon/MobileScreens/CartScreen/cart.dart';
+import 'package:xiaomi_hackathon/MobileScreens/Profile.dart';
 import 'CategoriesWidget.dart';
 import 'HomeAppBar.dart';
 import 'ItemsWidget.dart';
@@ -12,16 +14,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int homeIndex=0;
   @override
   Widget build(BuildContext context) {
+
     double _h =MediaQuery.of(context).size.height;
+    double _w = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: ListView(
+
+      bottomNavigationBar: CurvedNavigationBar(
+        height: _h/15,
+        color: Colors.orange,
+        backgroundColor: Colors.transparent,
+        items: <Widget>[
+          Icon(homeIndex == 0?Icons.home_outlined:Icons.home, size: 30),
+          Icon(homeIndex == 1? Icons.person_2_outlined:Icons.person, size: 30),
+          Icon(Icons.logout, size: 30),
+        ],
+        onTap: (index){
+          setState(() {
+            print(index);
+            homeIndex=index;
+          });
+        },
+        animationCurve: Curves.fastLinearToSlowEaseIn,
+      ),
+
+      body: homeIndex == 1?const Profile():ListView(
         children: [
           HomeAppBar(),
           Container(
-            //height: _h,
             padding: EdgeInsets.only(top: 15),
             decoration: BoxDecoration(
                 color: Colors.grey.shade200,
@@ -35,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 15),
                   padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 50,
+                  height: _h/16,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(30),
@@ -53,8 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Spacer(),
-                    Icon(Icons.camera_alt,
-                      size: 27,
+                    Icon(Icons.document_scanner_outlined,
+                      size: _w/18,
                       color: Colors.orange,),
 
                   ],),
@@ -62,12 +85,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 10,
+                    vertical: _h/30,
+                    horizontal: _w/23,
                   ),
                   child: Text("Categories",
                     style: TextStyle(
-                        fontSize: 25,
+                        fontSize: _w/16,
                         fontWeight: FontWeight.bold,
                         color: Colors.orange
                     ),),
@@ -77,10 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CategoriesWidget()),
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+                  margin: EdgeInsets.symmetric(vertical: _h/30,horizontal: _w/23),
                   child: Text("Best Selling",
                     style: TextStyle(
-                        fontSize: 25,
+                        fontSize: _w/16,
                         fontWeight: FontWeight.bold,
                         color: Colors.orange
                     ),),

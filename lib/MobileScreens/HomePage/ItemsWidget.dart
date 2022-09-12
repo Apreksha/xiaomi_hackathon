@@ -13,11 +13,11 @@ class _ItemsWidgetState extends State<ItemsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double _h = MediaQuery.of(context).size.height;
     double _w = MediaQuery.of(context).size.width;
     int columnCount = 2;
     return Container(
-      color: Colors.green,
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.only(bottom: _w/40, left: _w/40, right: _w/40),
       child: AnimationLimiter(
         child: GridView.count(
           childAspectRatio: 0.68,
@@ -41,6 +41,16 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image(image: AssetImage('assets/images/smartphone.png'), height: _h/10,),
+                          Text('Product Name'),
+                          Text('₹ discounted price',style: TextStyle(color: Colors.orange),),
+                              Text('₹ real price',style: TextStyle(decoration: TextDecoration.lineThrough),)
+                        ],
                       ),
                     ),
                   ),

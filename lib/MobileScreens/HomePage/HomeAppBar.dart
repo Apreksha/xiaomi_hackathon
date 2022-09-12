@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:xiaomi_hackathon/MobileScreens/CartScreen/cart.dart';
 class HomeAppBar extends StatefulWidget {
   const HomeAppBar({Key? key}) : super(key: key);
 
@@ -10,33 +11,44 @@ class HomeAppBar extends StatefulWidget {
 class _HomeAppBarState extends State<HomeAppBar> {
   @override
   Widget build(BuildContext context) {
+    double _w = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
       padding: EdgeInsets.all(25),
       child: Row(
         children: [
-          Icon(Icons.sort,
-            size: 30,
-            color: Colors.orange,),
-          Padding(padding: EdgeInsets.only(left:20 ),
-            child: Text('DP Shop',
-              style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange
-              ),),),
+          Padding(padding: EdgeInsets.only(left:_w/20 ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Xiaomi Shop',
+                  style: TextStyle(
+                      fontSize: _w/15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange
+                  ),),
+                Text('Innovation for everyone',
+                style: TextStyle(fontSize: _w/30,color: Colors.grey))
+              ],
+            ),),
           Spacer(),
           Badge(
-            badgeColor: Colors.red,
+            badgeColor: Colors.black.withOpacity(0.5),
             padding: EdgeInsets.all(7),
             badgeContent: Text('3',
               style: TextStyle(
                   color: Colors.white
               ),),
             child: InkWell(
-              onTap: (){},
-              child: Icon(Icons.shopping_bag_outlined,
-                size: 30,
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Cart()),
+                );
+              },
+              child: Icon(Icons.shopping_cart,
+                size: _w/12,
                 color: Colors.orange,),
             ),
           )

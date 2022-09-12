@@ -10,28 +10,39 @@ List items=[
   'Laptops',
   'Accessories',
   'Bundle Sales',
-  'SmartHome',
-  'tv'
+  'Smart Home',
+  'TV'
+];
+List images =[
+  "assets/images/phoneCat.png",
+  "assets/images/laptopCat.png",
+  "assets/images/earphoneCat.png",
+  "assets/images/bagCat.png",
+  "assets/images/smartHomeCat.png",
+  "assets/images/tvCat.png"
 ];
 class _CategoriesWidgetState extends State<CategoriesWidget> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        itemBuilder: (context, index){
-          return category(index);
-        });
+    double _w = MediaQuery.of(context).size.width;
+    double _h = MediaQuery.of(context).size.height;
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0),
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 6,
+          itemBuilder: (context, index){
+            return category(index,_w,_h);
+          }),
+    );
   }
-  Widget category(int index){
+  Widget category(int index, double _w, double _h){
     return InkWell(
       onTap: (){
       },
       child: Container(
-        width: 190,
-        height: 50,
-        margin: EdgeInsets.symmetric( horizontal: 10),
-        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+        margin: EdgeInsets.symmetric( horizontal: _w/50),
+        padding: EdgeInsets.symmetric(vertical: _h/65,horizontal: _w/50),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
@@ -39,12 +50,15 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.person,size: 20,),
+            Image(image: AssetImage(images[index]), width: _w/10,height: _w/10),
+            SizedBox(
+              width: _w/45,
+            ),
             Text(items[index],
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.orange
+                  fontSize: _h/50,
+                  color: Colors.black
               ),)
           ],
         ),

@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           HomeAppBar(),
           Container(
-            height: _h,
+            //height: _h,
             padding: EdgeInsets.only(top: 15),
             decoration: BoxDecoration(
                 color: Colors.grey.shade200,
@@ -87,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 SizedBox(
-                    height: _h,
-                    child: ItemsWidget())
+                  height: _h,
+                  child: ItemsWidget())
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:xiaomi_hackathon/MobileScreens/HomePage/HomeScreen.dart';
 
 import 'Categories/categories_main_page.dart';
 
@@ -51,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(Duration(seconds: 4), () {
       setState(() {
-        Navigator.pushReplacement(context, PageTransition(CategoriesMainPage()));
+        Navigator.pushReplacement(context, PageTransition(HomeScreen()));
       });
     });
   }

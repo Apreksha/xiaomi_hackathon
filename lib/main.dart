@@ -59,19 +59,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home:HomeScreen(),
       routes: <String, WidgetBuilder>{
         'login': (BuildContext context) => new MyCustomLoginUI(),
         'navigationDrawer': (BuildContext context) => new NavigationDrawer(),
-        'categoriesBody': (BuildContext context) => new Categories_Body(),
+        //'categoriesBody': (BuildContext context) => new Categories_Body(categoryIndex:0),
         'categories': (BuildContext context) => new Categories(),
         'checkout' : (BuildContext context) => new Checkout(),
         'orderHistory': (BuildContext context) => new OrderHistory(),
         'cart': (BuildContext context) => new Cart(),
         'cartBody': (BuildContext context) => new CartBody(),
         'cartItemCard': (BuildContext context) => new CartItemCard(),
-        'categoriesMainPage' : (BuildContext context) => new CategoriesMainPage(),
-        'itemCard': (BuildContext context) => new ItemCard(),
+        //'categoriesMainPage' : (BuildContext context) => new CategoriesMainPage(),
+       // 'itemCard': (BuildContext context) => new ItemCard(),
         'choosePayment': (BuildContext context) => new ChoosePayment(),
         'shippingAddress': (BuildContext context) => new ShippingAddress(),
         'showOrderDetails': (BuildContext context) => new ShowOrderDetails(),

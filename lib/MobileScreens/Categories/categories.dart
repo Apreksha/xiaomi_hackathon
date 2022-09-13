@@ -29,6 +29,7 @@ class _CategoriesState extends State<Categories> {
 
   Widget buildCategory(int index){
     return GestureDetector(
+
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: kDefaultPaddin),
         child: Column(

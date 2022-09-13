@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xiaomi_hackathon/MobileScreens/Categories/categories_main_page.dart';
 class CategoriesWidget extends StatefulWidget {
   const CategoriesWidget({Key? key}) : super(key: key);
 
@@ -39,6 +40,22 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   Widget category(int index, double _w, double _h){
     return InkWell(
       onTap: (){
+        int tempInd;
+        if(index == 0){
+          tempInd = 7;
+        }else if(index == 1){
+          tempInd = 0;
+        }else if(index == 4){
+          tempInd = 6;
+        }else if(index == 5){
+          tempInd = 8;
+        }else{
+          tempInd=index;
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CategoriesMainPage(categoryIndex: tempInd)),
+        );
       },
       child: Container(
         margin: EdgeInsets.symmetric( horizontal: _w/50),

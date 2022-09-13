@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
 
@@ -9,6 +10,7 @@ class FillAddress extends StatefulWidget {
 }
 
 class _FillAddressState extends State<FillAddress> {
+  String _address="", _city="", _state="", _pincode="";
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -22,6 +24,11 @@ class _FillAddressState extends State<FillAddress> {
             children: [
               SizedBox(height: 10,),
               TextField(
+                onChanged: (value){
+                  setState(() {
+                    _address=value.trim();
+                  });
+                },
                 keyboardType: TextInputType.streetAddress,
                 maxLines: 2,
                 decoration: InputDecoration(
@@ -30,16 +37,31 @@ class _FillAddressState extends State<FillAddress> {
                 ),
               ),
               TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _city=value.trim();
+                  });
+                },
                 decoration: InputDecoration(
                     labelText: 'City'
                 ),
               ),
               TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _state=value.trim();
+                  });
+                },
                 decoration: InputDecoration(
                     labelText: 'State'
                 ),
               ),
               TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _pincode=value.trim();
+                  });
+                },
                 maxLength: 6,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
@@ -47,7 +69,7 @@ class _FillAddressState extends State<FillAddress> {
                 ),
               ),
               SizedBox(height: 10,),
-              saveButton(width)
+              saveButton(width, _address, _city, _state, _pincode)
             ],
           ),
         ),
@@ -55,9 +77,21 @@ class _FillAddressState extends State<FillAddress> {
     );
   }
 
-  InkWell saveButton(var width){
+  InkWell saveButton(var width, String address, String city, String state, String pincode){
     return InkWell(
       onTap: (){
+        final firestoreInstance = FirebaseFirestore.instance;
+        firestoreInstance.collection("Operators").doc('02012001').get().then((
+            value) {
+          firestoreInstance.collection("Operators")
+              .doc('02012001'/*firebaseUser.uid*/)
+              .update({
+            "Customer Address": FieldValue.arrayUnion([address]),
+            "Customer City": FieldValue.arrayUnion([city]),
+            "Customer State": FieldValue.arrayUnion([state]),
+            "Customer Pincode": FieldValue.arrayUnion([pincode]),
+          });
+        });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text("Saved"),
           duration: Duration(seconds: 3),));

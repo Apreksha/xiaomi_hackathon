@@ -1,46 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/products_details.dart';
-import 'package:xiaomi_hackathon/MobileScreens/constants.dart';
-
 class ItemCard extends StatelessWidget {
+  List allproducts;
+  int index;
+  int CategoryIndex;
 
-  const ItemCard({Key? key}) : super(key: key);
+  ItemCard({required this.allproducts,required this.index,required this.CategoryIndex});
 
   @override
   Widget build(BuildContext context) {
+    double _w = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: (){
         Navigator.of(context).pushNamed('productDetails');
       },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 180,
-            width: 160,
-            decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(16)
+      child: Container(
+        margin: EdgeInsets.only(bottom: _w / 20),
+        padding: EdgeInsets.symmetric(horizontal: _w/20),
+        height: _w / 2,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            border: Border.all(color: Colors.grey.shade200)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FadeInImage.assetNetwork(
+              placeholder: 'assets/images/mainLogo.png',
+              image: allproducts[CategoryIndex]['images'][index]['image1'],width: _w/3, height: _w/3,
             ),
-            child: Image.asset('assets/images/smartphone.png'),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: kDefaultPaddin/4),
-            child: Text(
-              'MI Note 11',
-              style: TextStyle(
-                  color: kTextLightColor
+
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('${allproducts[CategoryIndex]['name'][index]}',
+                    textAlign: TextAlign.center ,
+                    style: TextStyle(fontWeight: FontWeight.bold),),
+                  SizedBox(
+                    height: _w/10,
+                  ),
+                  Text('₹ ${allproducts[CategoryIndex]['discountPrice'][index]}',style: TextStyle(color: Colors.orange),),
+                  Text('₹ ${allproducts[CategoryIndex]['price'][index]}',style: TextStyle(decoration: TextDecoration.lineThrough),)
+                ],
               ),
-            ),
-          ),
-          Text(
-            '\$234',
-            style: TextStyle(
-                fontWeight: FontWeight.bold
-            ),
-          )
-        ],
-      ),
+            )
+          ],
+        ),
+      )
     );
   }
 }

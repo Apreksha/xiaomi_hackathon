@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:xiaomi_hackathon/MobileScreens/HomePage/CategoriesWidget.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/products_details.dart';
 import 'package:xiaomi_hackathon/MobileScreens/productDB.dart';
 
 
@@ -13,14 +11,14 @@ class ItemsWidget extends StatefulWidget {
 }
 
 class _ItemsWidgetState extends State<ItemsWidget> {
-
+  List allproducts=[];
   @override
   Widget build(BuildContext context) {
     double _h = MediaQuery.of(context).size.height;
     double _w = MediaQuery.of(context).size.width;
     int columnCount = 2;
     return FutureBuilder(
-      future: productDB().productDetails(),
+      future: productDB().productDetails().then((value) =>allproducts = value),
         builder: (context,snapshot){
           if(snapshot.hasData){
             return Container(
@@ -45,6 +43,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             child: Container(
                               margin: EdgeInsets.only(
                                   bottom: _w / 30, left: _w / 60, right: _w / 60),
+                              padding: EdgeInsets.symmetric(horizontal: _w/50,vertical: _h/50),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -53,10 +52,14 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Image(image: NetworkImage(''), height: _h/10,),
-                                  Text('Product Name'),
-                                  Text('₹ discounted price',style: TextStyle(color: Colors.orange),),
-                                  Text('₹ real price',style: TextStyle(decoration: TextDecoration.lineThrough),)
+                                  FadeInImage.assetNetwork(
+                                    placeholder: 'assets/images/mainLogo.png',
+                                    image: allproducts[index]['images'][0]['image1'],width: _w/3, height: _w/3,
+                                  ),
+                                  SizedBox(height: _h/40,),
+                                  Text('${allproducts[index]['name'][0]}',textAlign: TextAlign.center ,style: TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('₹ ${allproducts[index]['discountPrice'][0]}',style: TextStyle(color: Colors.orange),),
+                                  Text('₹ ${allproducts[index]['price'][0]}',style: TextStyle(decoration: TextDecoration.lineThrough),)
                                 ],
                               ),
                             ),
@@ -70,6 +73,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
             );
           }else{
             return Scaffold(
+              backgroundColor: Colors.grey.shade200,
                 body: Center(child: CircularProgressIndicator()));
           }
         });

@@ -12,7 +12,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   @override
   var totalAmount='\$24555.00';
   var totalItems=2;
-
+//build function
   Widget build(BuildContext context) {
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;

@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/trackingOrder.dart';
 import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/color_dot.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
-import 'package:im_stepper/stepper.dart';
+
 
 class OrderHistoryDetails extends StatefulWidget {
   const OrderHistoryDetails({Key? key}) : super(key: key);
@@ -12,8 +13,18 @@ class OrderHistoryDetails extends StatefulWidget {
 }
 
 class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
+
   @override
   Widget build(BuildContext context) {
+    /*final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance.collection("Users").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+      setState(() {
+        fav = value.data()!["dbms_Fav"];});
+      favs = (value.data()!["dbms_Fav"].isEmpty) ? false : true;
+      if(value.data()!["dbms_Fav"]!=null){
+        loading = false;}
+    });*/
+
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: buildAppBar(context, 'Order Details'),
@@ -28,27 +39,7 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
               itemCardDetails('Invoice Number: ', '876464654867867'),
               Divider(),
               orderDetails(),
-              Container(
-                height: 500,
-                width: 100,
-                child: IconStepper(
-                  scrollingDisabled: false,
-                  steppingEnabled: false,
-                  direction: Axis.vertical,
-                  icons: [
-                    Icon(
-                      Icons.radio_button_checked,
-                      color: Colors.green,
-                    ),
-                    Icon(Icons.check),
-                    Icon(Icons.check),
-                    Icon(Icons.check),
-                    Icon(Icons.check),
-                  ],
-                ),
-              ),
-              //TrackingOrder(),
-              //tracking for order confirmed and delivered
+              TrackingOrder(),
               shippingDetails(),
               priceDetails(),
               Container(
@@ -86,9 +77,9 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
               Column(
                 children: [
                   Text('Redmi Note 5'),
-                  ColorDot(color: Colors.blue),
                   SizedBox(height: 5,),
-                  Text('₹25,999')
+                  Text('₹25,999'),
+                  ColorDot(color: Colors.blue),
                 ],
               ),
               Image.asset('assets/images/smartphone.png', width: 100,height: 100,)

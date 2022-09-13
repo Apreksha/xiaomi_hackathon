@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/CartScreen/cart_body.dart';
 import 'package:xiaomi_hackathon/MobileScreens/Checkout/checkout.dart';
@@ -103,10 +104,19 @@ class Cart extends StatelessWidget {
           child: Center(child: Text('Proceed',
             style: TextStyle(
               fontSize: 20,
-              //fontWeight: FontWeight.bold
             ),))),
-      onTap: (){
+      onTap: () async{
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Clicked')));
         Navigator.of(context).pushNamed('customerInformation');
+        final firestoreInstance = FirebaseFirestore.instance;
+        firestoreInstance.collection("Operators").doc('02012001').get().then((
+            value) {
+          firestoreInstance.collection("Operators")
+              .doc('02012001'/*firebaseUser.uid*/)
+              .update({
+            "Order No": FieldValue.arrayUnion(["468567767"]),
+          });
+        });
       },
     );
   }

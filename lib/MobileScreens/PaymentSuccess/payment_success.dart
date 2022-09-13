@@ -49,7 +49,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
     return GestureDetector(
       onTap: (){
         if(buttonName=='Share')
-          Email().sendEmail();
+          Email().sendEmail('6477687687','Apreksha Mathur', 'Redmi Note 11', '25999');
       },
       child: Column(
         children: [

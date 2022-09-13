@@ -1,8 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:xiaomi_hackathon/MobileScreens/Checkout/checkout.dart';
 import 'package:xiaomi_hackathon/MobileScreens/CustomerInformation/choiceOfBusinessCommunication.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
-import 'package:xiaomi_hackathon/MobileScreens/productDB.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CustomerInformation extends StatefulWidget {
@@ -14,14 +13,16 @@ class CustomerInformation extends StatefulWidget {
 
 class _CustomerInformationState extends State<CustomerInformation> {
   final formKey=GlobalKey<FormState>();
-  String _customerName="", _email="";
+  String _customerName="", _email="", choice="";
   var _contactNo;
+  Color emailText=Colors.black, whatsappText=Colors.black;
+  Color emailColor = Colors.white, whatsappColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: buildAppBar(context, 'Customer Information'),
@@ -87,7 +88,8 @@ class _CustomerInformationState extends State<CustomerInformation> {
                     ),),
                 ),
                 SizedBox(height: 15,),
-                ChoiceOfBusinessCommunication(),
+                choiceOfBusinessCommunication(),
+                //ChoiceOfBusinessCommunication(),
                 proceedToCheckoutButton(width)
               ],
             ),
@@ -100,7 +102,7 @@ class _CustomerInformationState extends State<CustomerInformation> {
   InkWell proceedToCheckoutButton(var width){
     return InkWell (
       onTap: (){
-        storeCustomerInformation(customerName: _customerName, email: _email, phone: _contactNo);
+        storeCustomerInformation();
         Navigator.of(context).pushNamed('checkout');
       },
       child: Container(
@@ -112,23 +114,93 @@ class _CustomerInformationState extends State<CustomerInformation> {
           color: Colors.orange,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Text('Proceed to Checkout',
-          style: TextStyle(
-            fontSize: 18
-          ),),
+        child: Center(
+          child: Text('Proceed to Checkout',
+            style: TextStyle(
+              fontSize: 18
+            ),),
+        ),
       ),
     ) ;
   }
 
-  Future storeCustomerInformation({required String customerName, required String email, required var phone}) async{
-    final docUser = FirebaseFirestore.instance.collection('Operators').doc('02012001');
-    var length = FirebaseFirestore.instance.collection('Operators').doc('02012001').snapshots().length;
+  Widget choiceOfBusinessCommunication(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: (){
+            setState(() {
+              emailColor = Color.fromARGB(255, 231, 67, 57);
+              whatsappColor = Colors.white;
+              emailText = Colors.white;
+              whatsappText = Colors.black;
+              choice="Email";
+            });
+          },
+          child: Container(
+            height: 45,
+            width: 100,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: emailColor,
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text('Email',
+                style: TextStyle(
+                    color: emailText,
+                    fontSize: 17
+                ),),
+            ),
+          ),
+        ),
+        SizedBox(width: 20,),
+        InkWell(
+          onTap: (){
+            setState(() {
+              whatsappColor = Color.fromARGB(255, 52, 168, 85);
+              emailColor = Colors.white;
+              whatsappText = Colors.white;
+              emailText = Colors.black;
+              choice="Whatsapp";
+            });
+          },
+          child: Container(
+            height: 45,
+            width: 100,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: whatsappColor,
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Center(
+              child: Text('Whatsapp',
+                style: TextStyle(
+                    color: whatsappText,
+                    fontSize: 17
+                ),),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-    final json={
-      'Customer Name' : customerName,
-      'Email' : email,
-      'Contact Number' : phone,
-    };
-    await docUser.set(json);
+  Future storeCustomerInformation() async{
+    final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance.collection("Operators").doc('02012001').get().then((
+        value) {
+      firestoreInstance.collection("Operators")
+          .doc('02012001'/*firebaseUsehhbr.uid*/)
+          .update({
+        "Customer Name": FieldValue.arrayUnion([_customerName]),
+        "Customer Phone": FieldValue.arrayUnion([_contactNo]),
+        "Customer Email": FieldValue.arrayUnion([_email]),
+        "Choice" : FieldValue.arrayUnion([choice])
+      });
+    });
   }
 }

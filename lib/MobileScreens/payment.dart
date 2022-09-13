@@ -172,7 +172,7 @@ class _PaymentState extends State<Payment> {
               children: [
                 Text('JAIPUR', style: TextStyle(color: Colors.black, fontSize: 15),),
                 SizedBox(width: 5,),
-                Text('302017', style: TextStyle(color: Colors.black, fontSize: 15),),
+                Text('302017', style: TextStyle(color: Colors.black, fontSize: 15),)
               ],
             )
           ],

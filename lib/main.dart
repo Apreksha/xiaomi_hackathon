@@ -16,13 +16,6 @@ import 'package:xiaomi_hackathon/MobileScreens/HomePage/HomeScreen.dart';
 import 'package:xiaomi_hackathon/MobileScreens/LoginScreen.dart';
 import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/orderHistoryDetail.dart';
 import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/order_history.dart';
-import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/email.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/add_to_cart_and_buy_button.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/cart_counter.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/color_and_spec.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/color_dot.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/product_body.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/product_title_with_image.dart';
 import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/products_details.dart';
 import 'package:xiaomi_hackathon/MobileScreens/SplashScreen.dart';
 import 'package:xiaomi_hackathon/MobileScreens/CustomerInformation/customerInformation.dart';
@@ -32,6 +25,8 @@ import 'package:xiaomi_hackathon/MobileScreens/payment.dart';
 import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/payment_success.dart';
 import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/whatsapp.dart';
 import 'package:xiaomi_hackathon/MobileScreens/test.dart';
+
+import 'MobileScreens/ProductDescription/product_body.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,10 +72,7 @@ class MyApp extends StatelessWidget {
         'showOrderDetails': (BuildContext context) => new ShowOrderDetails(),
         'orderHistoryDetails' : (BuildContext context) => new OrderHistoryDetails(),
         'paymentSuccess': (BuildContext context) => new PaymentSuccess(),
-        'addToCartAndBuyButton': (BuildContext context) => new AddToCartAndBuyButton(),
-        'cartCounter': (BuildContext context) => new CartCounter(),
         'productBody': (BuildContext context) => new ProductBody(),
-        'productTitleWithImage' : (BuildContext context) => new ProductTitleWithImage(),
         'productDetails': (BuildContext context) => new ProductDetails(),
         'fillAddress' : (BuildContext context) => new FillAddress(),
         'splashScreen': (BuildContext context) => new SplashScreen(),

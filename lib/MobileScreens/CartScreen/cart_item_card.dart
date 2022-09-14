@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/cart_counter.dart';
 import 'package:xiaomi_hackathon/MobileScreens/constants.dart';
+
+import '../ProductDescription/cart_counter.dart';
 
 class CartItemCard extends StatefulWidget {
   const CartItemCard({Key? key}) : super(key: key);

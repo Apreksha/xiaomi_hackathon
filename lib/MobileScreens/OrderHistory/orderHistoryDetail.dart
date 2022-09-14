@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/trackingOrder.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/color_dot.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
 
 
@@ -79,7 +78,13 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
                   Text('Redmi Note 5'),
                   SizedBox(height: 5,),
                   Text('₹25,999'),
-                  ColorDot(color: Colors.blue),
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+
+                      color: Colors.blue,
+                    ),
+                  ),
                 ],
               ),
               Image.asset('assets/images/smartphone.png', width: 100,height: 100,)

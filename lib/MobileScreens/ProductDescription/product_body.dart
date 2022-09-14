@@ -1,65 +1,92 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/add_to_cart_and_buy_button.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/cart_counter.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/color_and_spec.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/fav_button.dart';
-import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/product_title_with_image.dart';
-import 'package:xiaomi_hackathon/MobileScreens/constants.dart';
+import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/productInfo.dart';
+import 'sliderIndicator.dart';
 
 class ProductBody extends StatefulWidget {
-  const ProductBody({Key? key}) : super(key: key);
 
-  @override
+
+ @override
   State<ProductBody> createState() => _ProductBodyState();
 }
 
 class _ProductBodyState extends State<ProductBody> {
 
+  int activeIndex=0;
+
+  setActiveDot(int index) {
+    setState(() {
+      activeIndex = index;
+    });
+  }
+
+  List items=["https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1641445082.61868030.png",
+    "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1650980925.15485792.jpg",
+    "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1650980960.19661951.jpg"];
+  
   @override
   Widget build(BuildContext context) {
-
-    Size size=MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
+    double _h = MediaQuery.of(context).size.height;
+    double _w = MediaQuery.of(context).size.width;
+    return Container(
+      padding:EdgeInsets.only(left:_w/30,right: _w/30),
+      height: _h,
+      color: Colors.white,
+      child: ListView(
         children: [
-          SizedBox(
-            height: size.height,
-            child: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: size.height * 0.3),
-                  padding: EdgeInsets.only(
-                      top: size.height * 0.12,
-                      left: kDefaultPaddin,
-                      right: kDefaultPaddin),
-                  height: 500,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    )
-                  ),
-                  child: Column(
-                    children: [
-                      ColorAndSpec(color: [Colors.blue], spec: ['6GB']),
-                      SizedBox(height: kDefaultPaddin/2,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CartCounter(),
-                          FavButton(color: Colors.white)
-                        ],
-                      ),
-                      SizedBox(height: kDefaultPaddin/2,),
-                      AddToCartAndBuyButton()
-                    ],
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                CarouselSlider(
+                  items: items.map((item) {
+                    return Builder(
+                    builder:(BuildContext context){
+                      return Stack(
+                      children:<Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        image: DecorationImage(
+                        image: NetworkImage("$item"),
+                        fit: BoxFit.fitHeight,
+                        ),
+                        ),
+                        ),
+                                    ]
+                                    );
+                        }
+                    );
+                      }).toList(),
+                  //Slider Container properties
+                  options: CarouselOptions(
+                    height: _h/2.5,
+                    enlargeCenterPage: true,
+                    onPageChanged: (index, reason) => setActiveDot(index) ,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    viewportFraction: 1.0,
                   ),
                 ),
-                ProductTitleWithImage(name: 'Redmi Note 11', price:'\$24,999')
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(items.length, (idx) {
+                      return activeIndex == idx ? ActiveDot() : InactiveDot();
+                    })),
+                SizedBox(
+                  height: _h/20,
+                ),
+                Container(
+                  height: _h,
+                  color: Colors.white,
+                  child: ProductInfo(),
+                )
               ],
             ),
-          )
+          ),
         ],
       ),
     );

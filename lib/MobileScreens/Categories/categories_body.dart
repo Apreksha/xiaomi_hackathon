@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:xiaomi_hackathon/MobileScreens/Categories/categories.dart';
 import 'package:xiaomi_hackathon/MobileScreens/Categories/item_card.dart';
-import 'package:xiaomi_hackathon/MobileScreens/constants.dart';
 
 class Categories_Body extends StatefulWidget {
   List allproducts;
@@ -35,7 +33,7 @@ class _Categories_BodyState extends State<Categories_Body> with SingleTickerProv
   Widget build(BuildContext context) {
 
     double _w = MediaQuery.of(context).size.width;
-    if(widget.CategoryIndex == 7 || widget.CategoryIndex == 0 || widget.CategoryIndex == 4){
+    if(widget.CategoryIndex == 7 || widget.CategoryIndex == 0 || widget.CategoryIndex == 8){
       int tempInd;
       if(widget.CategoryIndex ==7){
         tempInd = widget.CategoryIndex-2;

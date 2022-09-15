@@ -5,7 +5,9 @@ import 'package:xiaomi_hackathon/MobileScreens/Checkout/showOrderDetails.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
 
 class Checkout extends StatefulWidget {
-  const Checkout({Key? key}) : super(key: key);
+  final String choice;
+  final int index;
+  const Checkout({Key? key, required this.choice, required this.index}) : super(key: key);
 
   @override
   State<Checkout> createState() => _CheckoutState();
@@ -30,8 +32,10 @@ class _CheckoutState extends State<Checkout> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context, 'Checkout'),
-      body:Center(
+      body:Container(
+        margin: EdgeInsets.only(top: 10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Card(
               child: Container(
@@ -79,14 +83,13 @@ class _CheckoutState extends State<Checkout> with SingleTickerProviderStateMixin
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  ShowOrderDetails(),
+                  ShowOrderDetails(index: widget.index),
                   ShippingAddress(),
-                  ChoosePayment()
+                  ChoosePayment(choice: widget.choice)
                 ],
               ),
             )
           ],
-
         ),
       ),
     );

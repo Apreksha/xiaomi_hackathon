@@ -56,7 +56,7 @@ class _PaymentState extends State<Payment> {
                 ],
               ),
             ),
-        details(isVisible),
+            details(isVisible),
             Container(
               //color: Colors.white,
               height: 50,
@@ -77,26 +77,26 @@ class _PaymentState extends State<Payment> {
 
   GestureDetector options(String option, String icon){
     return GestureDetector(
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10)
-          ),
-          height: 70,
-          margin: EdgeInsets.all(10),
-          padding: EdgeInsets.all(10),
-          width: MediaQuery.of(context).size.width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset('assets/icons/$icon.png', height: 50, width: 50,),
-              Text(option, style: TextStyle(fontSize: 18),),
-              IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios))
-            ],
-          )
-      ),
-      onTap: (){}
+        child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(10)
+            ),
+            height: 70,
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Image.asset('assets/icons/$icon.png', height: 50, width: 50,),
+                Text(option, style: TextStyle(fontSize: 18),),
+                IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios))
+              ],
+            )
+        ),
+        onTap: (){}
     );
 
   }

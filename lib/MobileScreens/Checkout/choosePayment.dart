@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/payment_success.dart';
 
 class ChoosePayment extends StatefulWidget {
-  const ChoosePayment({Key? key}) : super(key: key);
+  final String choice;
+  const ChoosePayment({Key? key, required this.choice}) : super(key: key);
 
   @override
   State<ChoosePayment> createState() => _ChoosePaymentState();
@@ -30,11 +31,13 @@ class _ChoosePaymentState extends State<ChoosePayment> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     print(response);
+
     verifySignature(
       signature: response.signature,
       paymentId: response.paymentId,
       orderId: response.orderId,
     );
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentSuccess(choice: widget.choice)));
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -42,7 +45,7 @@ class _ChoosePaymentState extends State<ChoosePayment> {
     // Do something when payment fails
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(response.message ?? ''),
+        content: Text('Payment Failed'),
       ),
     );
   }
@@ -132,7 +135,7 @@ class _ChoosePaymentState extends State<ChoosePayment> {
     if (res.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(res.body),
+          content: Text('Payment Failed'),
         ),
       );
     }
@@ -187,7 +190,7 @@ class _ChoosePaymentState extends State<ChoosePayment> {
         ),
         onTap: (){
           if(index==0) {
-            createOrder(20000);
+            createOrder(1499900);
             final firestoreInstance = FirebaseFirestore.instance;
             firestoreInstance.collection("Operators").doc('02012001').get().then((
                 value) {
@@ -197,9 +200,10 @@ class _ChoosePaymentState extends State<ChoosePayment> {
                 "Mode Of Payment": FieldValue.arrayUnion(['Online Payment']),
               });
             });
+
           }
           if(index==1) {
-            Navigator.of(context).pushNamed('paymentSuccess');
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentSuccess(choice: widget.choice)));
             final firestoreInstance = FirebaseFirestore.instance;
             firestoreInstance.collection("Operators").doc('02012001').get().then((
                 value) {

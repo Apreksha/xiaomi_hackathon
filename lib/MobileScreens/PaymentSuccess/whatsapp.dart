@@ -6,18 +6,25 @@ class Whatsapp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String number='919358600733', message='j';
-
-    return ElevatedButton(
-      onPressed: () async{
-        String url="https://api.whatsapp.com/send/?phone=919358600733&text&type=phone_number&app_absent=0";
-        final Uri _url = Uri.parse(url);
-
-        if (!await launchUrl(_url)) {
-          throw 'Could not launch $_url';
-        }
-      },
-      child: Text('open')
+    return Scaffold(
+      body: Center(
+        child: InkWell(
+            onTap: () {
+              open(context);
+            },
+            child: Container(
+                height: 50,
+                width: 50,
+                color:Colors.orange,
+                child: Text('open'))
+        ),
+      ),
     );
   }
+  void open(BuildContext context) async{
+    String number='+918619547360', message='Order confirmed from Xiaomi\n';
+    var url="whatsapp://send?phone=$number&text=$message";
+    await canLaunch(url) ? launch(url) : ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('cant'),));
+  }
 }
+

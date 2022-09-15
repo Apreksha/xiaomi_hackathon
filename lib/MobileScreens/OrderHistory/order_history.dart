@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/orderHistoryDetail.dart';
+import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderHistory extends StatefulWidget {
   @override
@@ -10,20 +12,28 @@ class OrderHistory extends StatefulWidget {
 }
 
 class _OrderHistoryState extends State<OrderHistory> {
-  List orderName=['Redmi Note 11', 'Redmi Note 11', 'Redmi Note 11', 'Redmi Note 11', 'Redmi Note 11'];
-  List orderPrice=['₹25,999', '₹25,999', '₹25,999', '₹25,999', '₹25,999'];
+  List customerName=[], productPrice=[], orderNo=[];
 
   @override
   Widget build(BuildContext c) {
+    final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+      setState(() {
+        productPrice = value.data()!["Product Price"];
+        customerName = value.data()!["Customer Name"];
+        orderNo = value.data()!["Order No"];
+      });
+    });
+
     double _w = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, 'Order History'),
       body: AnimationLimiter(
         child: ListView.builder(
           padding: EdgeInsets.all(_w / 30),
           physics:
           BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          itemCount: orderName.length,
+          itemCount: orderNo.length,
           itemBuilder: (BuildContext context, int index) {
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -37,7 +47,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                   curve: Curves.fastLinearToSlowEaseIn,
                   child: InkWell(
                     onTap: (){
-                      Navigator.of(context).pushNamed('orderHistoryDetails');
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => OrderHistoryDetails(index: index)));
                     },
                     child: Container(
                       margin: EdgeInsets.only(bottom: _w / 20),
@@ -56,20 +66,20 @@ class _OrderHistoryState extends State<OrderHistory> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    itemCardDetails('SO Number: ', '5818546'),
+                                    itemCardDetails('SO Number: ', orderNo[index]),
                                     Container(
                                       padding: EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: Colors.green,
-                                        borderRadius: BorderRadius.circular(5)
+                                          color: Colors.green,
+                                          borderRadius: BorderRadius.circular(5)
                                       ),
                                       child: Text('Delivered', style: TextStyle(color: Colors.white),),
                                     )
                                   ],
                                 ),
                                 itemCardDetails('Invoice Number: ', '58185464686'),
-                                itemCardDetails('Customer Name: ', 'Rohini Shrivastava'),
-                                itemCardDetails('Amount: ', '₹25,999')
+                                itemCardDetails('Customer Name: ', customerName[index]),
+                                itemCardDetails('Amount: ', productPrice[index])
                               ],
                             ),
                           ),
@@ -99,21 +109,6 @@ class _OrderHistoryState extends State<OrderHistory> {
     );
   }
 
-  AppBar buildAppBar(BuildContext context){
-    return AppBar(
-      backgroundColor: Colors.orange,
-      elevation: 0,
-      leading: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.black,), onPressed: (){
-        Navigator.of(context).pop();
-      },),
-      title: Text('Order History',
-        style: TextStyle(
-          color: Colors.black
-        ),
-      ),
-    );
-  }
-
   Row itemCardDetails(String headingText, String contentText){
     return Row(
       children: [
@@ -126,8 +121,8 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Text(
       text,
       style: TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold
+          fontSize: 16,
+          fontWeight: FontWeight.bold
       ),
     );
   }
@@ -136,7 +131,7 @@ class _OrderHistoryState extends State<OrderHistory> {
     return Text(
       text,
       style: TextStyle(
-          fontSize: 15,
+        fontSize: 15,
       ),
     );
   }

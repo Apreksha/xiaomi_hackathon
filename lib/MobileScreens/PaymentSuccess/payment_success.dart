@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:xiaomi_hackathon/MobileScreens/HomePage/HomeScreen.dart';
 import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/email.dart';
 
 class PaymentSuccess extends StatefulWidget {
-  const PaymentSuccess({Key? key}) : super(key: key);
+  final String choice;
+  const PaymentSuccess({Key? key, required this.choice}) : super(key: key);
 
   @override
   _PaymentSuccessState createState() => _PaymentSuccessState();
@@ -12,7 +14,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   @override
   var totalAmount='\$24555.00';
   var totalItems=2;
-//build function
+
   Widget build(BuildContext context) {
     var height=MediaQuery.of(context).size.height;
     var width=MediaQuery.of(context).size.width;
@@ -34,11 +36,13 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
             ),
             SizedBox(height: 30,),
             ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.orange)
-              ),
-              onPressed: (){},
-              child: Text('Go To HomePage')
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.orange)
+                ),
+                onPressed: (){
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+                },
+                child: Text('Go To HomePage')
             )
           ],
         ),
@@ -48,8 +52,22 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   GestureDetector showButton(String buttonName, String icon){
     return GestureDetector(
       onTap: (){
-        if(buttonName=='Share')
-          Email().sendEmail('6477687687','Apreksha Mathur', 'Redmi Note 11', '25999');
+        if(buttonName=='Share') {
+          if(widget.choice == 'Email') {
+            Email().sendEmail(
+                '6477687687', 'Apreksha Mathur', 'Redmi Note 11', '25999');
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Email Successfully Sent")));
+          }
+          else{
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Whatsapp Message Successfully Sent")));
+          }
+        }
+        else{
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Receipt Printed")));
+        }
       },
       child: Column(
         children: [
@@ -65,10 +83,10 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
     return Container(
       height: height*0.55,
       decoration: BoxDecoration(
-        color: Colors.orange,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight:Radius.circular(30))
+          color: Colors.orange,
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(30),
+              bottomRight:Radius.circular(30))
       ),
       width: width,
       child: Container(

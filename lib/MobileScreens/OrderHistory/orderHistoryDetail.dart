@@ -5,24 +5,30 @@ import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
 
 
 class OrderHistoryDetails extends StatefulWidget {
-  const OrderHistoryDetails({Key? key}) : super(key: key);
+  final int index;
+  const OrderHistoryDetails({Key? key, required this.index}) : super(key: key);
 
   @override
   State<OrderHistoryDetails> createState() => _OrderHistoryDetailsState();
 }
 
 class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
-
+  String productName="", productPrice="", customerName="", customerAddress="", customerPhone="", orderNo="", customerEmail="";
   @override
   Widget build(BuildContext context) {
-    /*final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Users").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+    final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
       setState(() {
-        fav = value.data()!["dbms_Fav"];});
-      favs = (value.data()!["dbms_Fav"].isEmpty) ? false : true;
-      if(value.data()!["dbms_Fav"]!=null){
-        loading = false;}
-    });*/
+        productName = value.data()!["Product Name"][widget.index];
+        productPrice = value.data()!["Product Price"][widget.index];
+        customerName = value.data()!["Customer Name"][widget.index];
+        customerAddress = value.data()!["Customer Address"][widget.index];
+        customerEmail = value.data()!["Customer Email"][widget.index];
+        customerPhone = value.data()!["Customer Phone"][widget.index];
+        orderNo = value.data()!["Order No"][widget.index];
+
+      });
+    });
 
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -33,7 +39,7 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
           margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: Column(
             children: [
-              itemCardDetails('Service Order Number: ', '876464654867867'),
+              itemCardDetails('Service Order Number: ', orderNo),
               SizedBox(height: 5,),
               itemCardDetails('Invoice Number: ', '876464654867867'),
               Divider(),
@@ -41,22 +47,6 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
               TrackingOrder(),
               shippingDetails(),
               priceDetails(),
-              Container(
-                height: 80,
-                padding: EdgeInsets.all(10),
-                width: width,
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text('Payment Method', style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),),
-                    Text('Cash')
-                  ],
-                ),
-              )
             ],
           ),
         ),
@@ -75,16 +65,10 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
             children: [
               Column(
                 children: [
-                  Text('Redmi Note 5'),
+                  Text(productName),
                   SizedBox(height: 5,),
-                  Text('₹25,999'),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-
-                      color: Colors.blue,
-                    ),
-                  ),
+                  Text(productPrice),
+                  //ColorDot(color: Colors.blue),
                 ],
               ),
               Image.asset('assets/images/smartphone.png', width: 100,height: 100,)
@@ -109,9 +93,9 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
             children: [
               Center(child: Text('Price Details', style: TextStyle(color: Colors.grey),)),
               Divider(),
-              showPriceDetails('Subtotal', '₹14,999'),
+              showPriceDetails('Subtotal', productPrice),
               showPriceDetails('Delivery Charges', '₹0'),
-              showPriceDetails('Total', '₹14,999'),
+              showPriceDetails('Total', productPrice),
             ],
           ),
         ),
@@ -133,9 +117,10 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
             children: [
               Center(child: Text('Shipping Details', style: TextStyle(color: Colors.grey),)),
               Divider(),
-              Text('Customer Name: Rohini Shrivastava', style: TextStyle(fontWeight: FontWeight.bold),),
-              Text('Customer Address : C-25, Hari Ram Colony, Queens Road, Mahaveer Nagar\nJaipur\nRajasthan, 302089'),
-              Text('Phone Number: 9758457896')
+              Text('Customer Name: $customerName', style: TextStyle(fontWeight: FontWeight.bold),),
+              Text('Customer Address: $customerAddress'),
+              Text('Customer Email: $customerEmail'),
+              Text('Phone Number: $customerPhone')
             ],
           ),
         ),
@@ -172,7 +157,7 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
     return Text(
       text,
       style: TextStyle(
-          fontSize: 16,
+        fontSize: 16,
       ),
     );
   }

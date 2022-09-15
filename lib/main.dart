@@ -28,6 +28,7 @@ import 'package:xiaomi_hackathon/MobileScreens/filladdress.dart';
 import 'package:xiaomi_hackathon/MobileScreens/navigationDrawer.dart';
 import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/payment_success.dart';
 import 'package:xiaomi_hackathon/MobileScreens/storeInformation.dart';
+import 'package:xiaomi_hackathon/MobileScreens/test.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +57,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Whatsapp(),
+        home: Test(),
         routes: <String, WidgetBuilder>{
           'login': (BuildContext context) => new MyCustomLoginUI(),
           'navigationDrawer': (BuildContext context) => new NavigationDrawer(),

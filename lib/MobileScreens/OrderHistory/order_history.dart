@@ -5,6 +5,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/orderHistoryDetail.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xiaomi_hackathon/MobileScreens/loadingScreen.dart';
 
 class OrderHistory extends StatefulWidget {
   @override
@@ -13,20 +14,14 @@ class OrderHistory extends StatefulWidget {
 
 class _OrderHistoryState extends State<OrderHistory> {
   List customerName=[], productPrice=[], orderNo=[];
+  bool loading = true;
 
   @override
-  Widget build(BuildContext c) {
-    final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
-      setState(() {
-        productPrice = value.data()!["Product Price"];
-        customerName = value.data()!["Customer Name"];
-        orderNo = value.data()!["Order No"];
-      });
-    });
+  Widget build(BuildContext context) {
+    getCustomerInformation();
 
     double _w = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return loading==false ? Scaffold(
       appBar: buildAppBar(context, 'Order History'),
       body: AnimationLimiter(
         child: ListView.builder(
@@ -106,7 +101,7 @@ class _OrderHistoryState extends State<OrderHistory> {
           },
         ),
       ),
-    );
+    ) : LoadingScreen();
   }
 
   Row itemCardDetails(String headingText, String contentText){
@@ -134,5 +129,20 @@ class _OrderHistoryState extends State<OrderHistory> {
         fontSize: 15,
       ),
     );
+  }
+
+  getCustomerInformation(){
+    final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+      setState(() {
+        productPrice = value.data()!["Product Price"];
+        customerName = value.data()!["Customer Name"];
+        orderNo = value.data()!["Order No"];
+
+        if(value.data()!["Customer Name"]!= null || value.data()!["Product Price"]!= null || value.data()!["Order No"]!= null){
+          loading = false;
+        }
+      });
+    });
   }
 }

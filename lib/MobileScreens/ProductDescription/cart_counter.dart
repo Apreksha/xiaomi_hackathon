@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/constants.dart';
 
 class CartCounter extends StatefulWidget {
-  const CartCounter({Key? key}) : super(key: key);
+  int count;
+  CartCounter({required this.count});
 
   @override
   State<CartCounter> createState() => _CartCounterState();
 }
 
 class _CartCounterState extends State<CartCounter> {
-  int numOfItems=1;
+  late int numOfItems = widget.count;
+
   @override
   Widget build(BuildContext context) {
     return Row(

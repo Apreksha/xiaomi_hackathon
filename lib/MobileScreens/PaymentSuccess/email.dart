@@ -18,7 +18,7 @@ class Email {
       ..html = "<h2>Order Confirmation</h2>\n<p>Hello $customerName,<br>$string1</p>"
           "<h2>Order summary</h2>\n<p>Order #$orderNo</p><p>Placed on ${DateTime.now()}</p>"
           "<p>Product Name: $productName</p><p><b>Order Total: Rs.$price.00</b></p>"
-          "<br><br><p>We hope to see you again soon\n<h4>Xiaomi</h4></p>"
+          "<br><br><p>We hope to see you again soon.\n<h4>Xiaomi, India</h4></p>"
       ..attachments=[FileAttachment(File('D:/AndroidStudioProjects/xiaomi_hackathon/assets/temp.pdf'))]
     ;
 

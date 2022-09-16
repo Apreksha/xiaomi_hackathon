@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:xiaomi_hackathon/MobileScreens/SignUp.dart';
 import 'package:xiaomi_hackathon/MobileScreens/constants.dart';
 
 import '../ProductDescription/cart_counter.dart';
 
 class CartItemCard extends StatefulWidget {
-  const CartItemCard({Key? key}) : super(key: key);
+  List image;
+  List productName;
+  List quantity;
+  List price;
+  int index;
+
+  CartItemCard({required this.image,required this.productName,required this.quantity,required this.price,required this.index});
 
   @override
   State<CartItemCard> createState() => _CartItemCardState();
 }
 
 class _CartItemCardState extends State<CartItemCard> {
-  int qty=1, price = 25999;
 
   @override
   Widget build(BuildContext context) {
@@ -38,19 +44,19 @@ class _CartItemCardState extends State<CartItemCard> {
               ),
             ),
           ),
-          showNamePriceQty(size),
+          showNamePriceQty(size,widget.productName[widget.index],widget.price[widget.index],widget.quantity[widget.index]),
           Container(
             margin: EdgeInsets.only(right: 10),
-            child: CartCounter()
+            child: CartCounter(count: widget.quantity[widget.index],)
           )],
       ),
     );
   }
 
-  Column showNamePriceQty(var size){
+  Column showNamePriceQty(var size,String name,int price,int quantity){
     return Column(
       children: [
-        Text('Redmi Note 11',
+        Text(name,
           style: TextStyle(
               fontSize: 16,
               color: Colors.black
@@ -58,7 +64,7 @@ class _CartItemCardState extends State<CartItemCard> {
           maxLines: 2,),
         const SizedBox(height: 10,),
         Text.rich(TextSpan(
-            text: (price*qty).toString(),
+            text: (quantity*price).toString(),
             style: TextStyle(
                 color: kPrimaryColor
             ),

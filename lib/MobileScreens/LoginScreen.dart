@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:xiaomi_hackathon/MobileScreens/SignUp.dart';
 
 class MyCustomLoginUI extends StatefulWidget {
   @override
@@ -104,6 +105,10 @@ class _MyCustomLoginUIState extends State<MyCustomLoginUI>
                               style: TextStyle(color: Colors.orange),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SignUp()),
+                                  );
                                   HapticFeedback.lightImpact();
 
                                 },

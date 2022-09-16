@@ -54,7 +54,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
         }
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => CategoriesMainPage(categoryIndex: tempInd)),
+          MaterialPageRoute(builder: (context) => CategoriesMainPage(categoryIndex: tempInd,title: items[index],)),
         );
       },
       child: Container(

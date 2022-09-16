@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/HomePage/HomeScreen.dart';
 import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/email.dart';
+import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/whatsapp.dart';
 
 class PaymentSuccess extends StatefulWidget {
   final String choice;
@@ -55,11 +56,13 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
         if(buttonName=='Share') {
           if(widget.choice == 'Email') {
             Email().sendEmail(
-                '6477687687', 'Apreksha Mathur', 'Redmi Note 11', '25999');
+                '6477687687', 'Apreksha Mathur', 'Redmi Note 11', '25,999');
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Email Successfully Sent")));
           }
           else{
+            Whatsapp().sendMessage(
+                '+919358600733', 'Arnav Kulshrestha', 'Redmi Note 11', '25,999','536464646');
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Whatsapp Message Successfully Sent")));
           }

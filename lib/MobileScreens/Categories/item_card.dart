@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/products_details.dart';
 class ItemCard extends StatelessWidget {
   List allproducts;
   int index;
@@ -11,7 +12,13 @@ class ItemCard extends StatelessWidget {
     double _w = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: (){
-        Navigator.of(context).pushNamed('productDetails');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>
+              ProductDetails(name: allproducts[CategoryIndex]['name'][index],
+                  discountprice: allproducts[CategoryIndex]['discountPrice'][index],
+                  price: allproducts[CategoryIndex]['price'][index],imageMap: allproducts[CategoryIndex]['images'][index],)),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(bottom: _w / 20),

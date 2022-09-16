@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/Checkout/choosePayment.dart';
 import 'package:xiaomi_hackathon/MobileScreens/Checkout/shippingAddress.dart';
 import 'package:xiaomi_hackathon/MobileScreens/Checkout/showOrderDetails.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
+import 'package:xiaomi_hackathon/MobileScreens/loadingScreen.dart';
 
 class Checkout extends StatefulWidget {
   final String choice;
@@ -15,6 +17,9 @@ class Checkout extends StatefulWidget {
 
 class _CheckoutState extends State<Checkout> with SingleTickerProviderStateMixin{
   late TabController _tabController;
+  bool loading = true;
+  String customerName="", customerPhone="", customerEmail="", orderNo="", productName="", productPrice="", customerAddress="",
+      customerCity="", customerState="", customerPincode="";
 
   @override
   void initState() {
@@ -30,7 +35,8 @@ class _CheckoutState extends State<Checkout> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    getCustomerInformation();
+    return loading==false ? Scaffold(
       appBar: buildAppBar(context, 'Checkout'),
       body:Container(
         margin: EdgeInsets.only(top: 10),
@@ -48,33 +54,9 @@ class _CheckoutState extends State<Checkout> with SingleTickerProviderStateMixin
                   controller: _tabController,
                   isScrollable: true,
                   tabs: [
-                    Tab(child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/icons/order.png', height: 20, width: 20,),
-                        Text('Order Details', style: TextStyle(
-                            color: Colors.black
-                        ),),
-                      ],
-                    ),),
-                    Tab(child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/icons/shipping.png', height: 20, width: 20,),
-                        Text('Shipping', style: TextStyle(
-                            color: Colors.black
-                        ),),
-                      ],
-                    ),),
-                    Tab(child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/icons/payment.png', height: 20, width: 20,),
-                        Text('Payment', style: TextStyle(
-                            color: Colors.black
-                        ),),
-                      ],
-                    ),),
+                    tabBarHeadings('assets/icons/order.png', 'Order Details'),
+                    tabBarHeadings('assets/icons/shipping.png', 'Shipping'),
+                    tabBarHeadings('assets/icons/payment.png', 'Payment'),
                   ],
                 ),
               ),
@@ -83,15 +65,55 @@ class _CheckoutState extends State<Checkout> with SingleTickerProviderStateMixin
               child: TabBarView(
                 controller: _tabController,
                 children: [
-                  ShowOrderDetails(index: widget.index),
-                  ShippingAddress(),
-                  ChoosePayment(choice: widget.choice)
+                  ShowOrderDetails(productName: productName, productPrice: productPrice, customerName: customerName,
+                    customerEmail: customerEmail, customerPhone: customerPhone, orderNo: orderNo,),
+                  ShippingAddress(address: customerAddress, city: customerCity, state: customerState, pincode: customerPincode,),
+                  ChoosePayment(choice: widget.choice, index: widget.index)
                 ],
               ),
             )
           ],
         ),
       ),
+    ) : LoadingScreen();
+  }
+
+  Widget tabBarHeadings(String iconPath, String heading){
+    return Tab(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(iconPath, height: 20, width: 20,),
+          Text(heading, style: TextStyle(
+              color: Colors.black
+          ),),
+        ],
+      ),
     );
+  }
+
+  getCustomerInformation(){
+    final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+      setState(() {
+        customerName = value.data()!["Customer Name"][widget.index];
+        customerEmail = value.data()!["Customer Email"][widget.index];
+        customerPhone = value.data()!["Customer Phone"][widget.index];
+        orderNo = value.data()!["Order No"][widget.index];
+        productName = value.data()!["Product Name"][widget.index];
+        productPrice = value.data()!["Product Price"][widget.index];
+        customerAddress = value.data()!["Customer Address"][widget.index];
+        customerCity = value.data()!["Customer City"][widget.index];
+        customerState = value.data()!["Customer State"][widget.index];
+        customerPincode = value.data()!["Customer Pincode"][widget.index];
+
+        if(value.data()!["Customer Name"]!= null || value.data()!["Customer Email"]!= null || value.data()!["Customer Phone"]!= null ||
+            value.data()!["Customer Address"]!= null || value.data()!["Customer City"]!= null || value.data()!["Customer State"]!= null ||
+            value.data()!["Customer Pincode"]!= null || value.data()!["Order No"]!= null || value.data()!["Product Name"]!= null ||
+            value.data()!["Product Price"]!= null){
+          loading = false;
+        }
+      });
+    });
   }
 }

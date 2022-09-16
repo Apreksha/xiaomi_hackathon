@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/trackingOrder.dart';
 import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
+import 'package:xiaomi_hackathon/MobileScreens/loadingScreen.dart';
 
 
 class OrderHistoryDetails extends StatefulWidget {
@@ -13,25 +14,16 @@ class OrderHistoryDetails extends StatefulWidget {
 }
 
 class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
-  String productName="", productPrice="", customerName="", customerAddress="", customerPhone="", orderNo="", customerEmail="";
+  String productName="", productPrice="", customerName="", customerAddress="", customerPhone="", orderNo="", customerEmail="",
+      paymentMode="", choiceOfBusinessCommunication="", customerCity="", customerState="", customerPincode="";
+  bool loading = true;
+
   @override
   Widget build(BuildContext context) {
-    final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
-      setState(() {
-        productName = value.data()!["Product Name"][widget.index];
-        productPrice = value.data()!["Product Price"][widget.index];
-        customerName = value.data()!["Customer Name"][widget.index];
-        customerAddress = value.data()!["Customer Address"][widget.index];
-        customerEmail = value.data()!["Customer Email"][widget.index];
-        customerPhone = value.data()!["Customer Phone"][widget.index];
-        orderNo = value.data()!["Order No"][widget.index];
-
-      });
-    });
-
+    getInformation();
     var width = MediaQuery.of(context).size.width;
-    return Scaffold(
+
+    return loading==false ? Scaffold(
       appBar: buildAppBar(context, 'Order Details'),
       body: SingleChildScrollView(
         child: Container(
@@ -47,13 +39,38 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
               TrackingOrder(),
               shippingDetails(),
               priceDetails(),
+              choices(width, 'Payment Mode', paymentMode),
+              choices(width, 'Choice of Business Communication', choiceOfBusinessCommunication),
             ],
           ),
         ),
       ),
-    );
+    ) : LoadingScreen();
   }
 
+  Widget choices(var width, String heading, String value){
+    return Column(
+      children: [
+        Container(
+          height: 80,
+          padding: EdgeInsets.all(10),
+          width: width,
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(heading, style: TextStyle(
+                  fontWeight: FontWeight.bold
+              ),),
+              Text(value)
+            ],
+          ),
+        ),
+        SizedBox(height: 10,),
+      ],
+    );
+  }
   Column orderDetails(){
     return Column(
       children: [
@@ -169,5 +186,32 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
         fontSize: 15,
       ),
     );
+  }
+
+  getInformation(){
+    final firestoreInstance = FirebaseFirestore.instance;
+    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+      setState(() {
+        productName = value.data()!["Product Name"][widget.index];
+        productPrice = value.data()!["Product Price"][widget.index];
+        customerName = value.data()!["Customer Name"][widget.index];
+        customerAddress = value.data()!["Customer Address"][widget.index];
+        customerCity = value.data()!["Customer City"][widget.index];
+        customerState = value.data()!["Customer State"][widget.index];
+        customerPincode = value.data()!["Customer Pincode"][widget.index];
+        customerEmail = value.data()!["Customer Email"][widget.index];
+        customerPhone = value.data()!["Customer Phone"][widget.index];
+        orderNo = value.data()!["Order No"][widget.index];
+        paymentMode = value.data()!["Payment Mode"][widget.index];
+        choiceOfBusinessCommunication = value.data()!["Choice"][widget.index];
+
+        if(value.data()!["Customer Name"]!= null || value.data()!["Customer Email"]!= null || value.data()!["Customer Phone"]!= null ||
+            value.data()!["Customer Address"]!= null || value.data()!["Customer City"]!= null || value.data()!["Customer State"]!= null ||
+            value.data()!["Customer Pincode"]!= null || value.data()!["Order No"]!= null || value.data()!["Product Name"]!= null ||
+            value.data()!["Product Price"]!= null || value.data()!["Payment Mode"]!= null || value.data()!["Choice"]!= null){
+          loading = false;
+        }
+      });
+    });
   }
 }

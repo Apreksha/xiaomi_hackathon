@@ -1,30 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Whatsapp extends StatelessWidget {
-  const Whatsapp({Key? key}) : super(key: key);
+class Whatsapp{
+  sendMessage(String number, String customerName, String productName, String productPrice, String orderNo) async{
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: InkWell(
-            onTap: () {
-              open(context);
-            },
-            child: Container(
-                height: 50,
-                width: 50,
-                color:Colors.orange,
-                child: Text('open'))
-        ),
-      ),
-    );
-  }
-  void open(BuildContext context) async{
-    String number='+918619547360', message='Order confirmed from Xiaomi\n';
+    String string1 = "Thank you for your order. We’ll send a confirmation when your order ships. "
+        "If you would like to view the status of your order or make any changes to it, please visit your nearest Mi Store.";
+    String message='Order confirmed from Xiaomi\nHello $customerName,\n$string1\n\n'
+        'Order No: $orderNo\nProduct Name: $productName\nOrder Total: Rs.$productPrice.00'
+        '\nWe hope to see you again soon.\nXiaomi, India';
+
     var url="whatsapp://send?phone=$number&text=$message";
-    await canLaunch(url) ? launch(url) : ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('cant'),));
+    await launch(url);
   }
 }
 

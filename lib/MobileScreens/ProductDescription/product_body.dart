@@ -4,7 +4,11 @@ import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/productInfo.da
 import 'sliderIndicator.dart';
 
 class ProductBody extends StatefulWidget {
-
+  String name;
+  int discountprice;
+  int price;
+  Map<String,dynamic> imageMap;
+  ProductBody({required this.name,required this.discountprice,required this.price,required this.imageMap});
 
  @override
   State<ProductBody> createState() => _ProductBodyState();
@@ -13,17 +17,23 @@ class ProductBody extends StatefulWidget {
 class _ProductBodyState extends State<ProductBody> {
 
   int activeIndex=0;
+  late List items;
 
   setActiveDot(int index) {
     setState(() {
+
       activeIndex = index;
     });
   }
 
-  List items=["https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1641445082.61868030.png",
-    "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1650980925.15485792.jpg",
-    "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1650980960.19661951.jpg"];
-  
+  @override
+  void initState() {
+    items = widget.imageMap.values.toList();
+    // TODO: implement initState
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double _h = MediaQuery.of(context).size.height;
@@ -64,6 +74,7 @@ class _ProductBodyState extends State<ProductBody> {
                     height: _h/2.5,
                     enlargeCenterPage: true,
                     onPageChanged: (index, reason) => setActiveDot(index) ,
+                    autoPlay: true,
                     aspectRatio: 16 / 9,
                     autoPlayCurve: Curves.fastLinearToSlowEaseIn,
                     enableInfiniteScroll: true,
@@ -80,9 +91,8 @@ class _ProductBodyState extends State<ProductBody> {
                   height: _h/20,
                 ),
                 Container(
-                  height: _h,
                   color: Colors.white,
-                  child: ProductInfo(),
+                  child: ProductInfo(name: widget.name, discountprice: widget.discountprice, price: widget.price),
                 )
               ],
             ),

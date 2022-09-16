@@ -6,17 +6,43 @@ import 'package:xiaomi_hackathon/MobileScreens/appBar.dart';
 import 'package:xiaomi_hackathon/MobileScreens/CustomerInformation/customerInformation.dart';
 import 'package:xiaomi_hackathon/MobileScreens/constants.dart';
 
-class Cart extends StatelessWidget {
-  const Cart({Key? key}) : super(key: key);
+import '../productDB.dart';
+
+class Cart extends StatefulWidget {
+
+  @override
+  State<Cart> createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  late List image=[];
+  late List productName=[];
+  late List quantity=[];
+  late List price=[];
+  late double totalPrice =0;
+  @override
 
   @override
   Widget build(BuildContext context) {
-    const int cost=0;
-    return Scaffold(
-      appBar: buildAppBar(context, 'Cart'),
-      body: CartBody(),
-      bottomNavigationBar: buildBottomNavigationBar(context)
-    );
+
+    return FutureBuilder(
+      future: getCart('12345'),
+      builder: (context,snapshot){
+        if(snapshot.hasData){
+          return Scaffold(
+              appBar: buildAppBar(context, 'Cart'),
+              body: CartBody(image: image, productName: productName, quantity: quantity, price: price),
+              bottomNavigationBar: buildBottomNavigationBar(context)
+          );
+        }else{
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
+    )  ;
   }
 
   Container buildBottomNavigationBar(BuildContext context){
@@ -75,7 +101,7 @@ class Cart extends StatelessWidget {
                     text: 'Total:\n',
                     children: [
                       TextSpan(
-                          text: '₹ 25,999',
+                          text: '₹ $totalPrice',
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.black
@@ -107,7 +133,7 @@ class Cart extends StatelessWidget {
             ),))),
       onTap: () async{
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Clicked')));
-        Navigator.of(context).pushNamed('customerInformation');
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CustomerInformation()));
         final firestoreInstance = FirebaseFirestore.instance;
         firestoreInstance.collection("Operators").doc('02012001').get().then((
             value) {
@@ -119,5 +145,19 @@ class Cart extends StatelessWidget {
         });
       },
     );
+  }
+
+  Future<DocumentSnapshot<Map<String,dynamic>>> getCart(String uid) async{
+    final firestoreInstance = FirebaseFirestore.instance;
+    var currentUser = await firestoreInstance.collection('cart').doc(uid).get();
+    firestoreInstance.collection("cart").doc(uid/*firebaseUser!.uid*/).get().then((value){
+      setState((){
+        image = value.data()!['image'];
+        productName = value.data()!['productName'];
+        quantity =value.data()!['quantity'];
+        price = value.data()!['price'];
+      });
+    });
+    return currentUser;
   }
 }

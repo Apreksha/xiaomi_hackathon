@@ -44,7 +44,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
               onTap: (){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Cart()),
+                  MaterialPageRoute(builder: (context) => Cart()),
                 );
               },
               child: Icon(Icons.shopping_cart,

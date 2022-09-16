@@ -9,13 +9,16 @@ import 'package:xiaomi_hackathon/MobileScreens/PaymentSuccess/payment_success.da
 
 class ChoosePayment extends StatefulWidget {
   final String choice;
-  const ChoosePayment({Key? key, required this.choice}) : super(key: key);
+  final int index;
+  const ChoosePayment({Key? key, required this.choice, required this.index}) : super(key: key);
 
   @override
   State<ChoosePayment> createState() => _ChoosePaymentState();
 }
 
 class _ChoosePaymentState extends State<ChoosePayment> {
+  List<dynamic> paymentArray=[];
+  String paymentChoice="";
   final _razorpay = Razorpay();
 
   @override
@@ -189,36 +192,42 @@ class _ChoosePaymentState extends State<ChoosePayment> {
             )
         ),
         onTap: (){
+          getCustomerInformation();
+          paymentChoice=option;
+          storeCustomerInformation();
           if(index==0) {
             createOrder(1499900);
-            final firestoreInstance = FirebaseFirestore.instance;
-            firestoreInstance.collection("Operators").doc('02012001').get().then((
-                value) {
-              firestoreInstance.collection("Operators")
-                  .doc('02012001'/*firebaseUser.uid*/)
-                  .update({
-                "Mode Of Payment": FieldValue.arrayUnion(['Online Payment']),
-              });
-            });
-
           }
           if(index==1) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => PaymentSuccess(choice: widget.choice)));
-            final firestoreInstance = FirebaseFirestore.instance;
-            firestoreInstance.collection("Operators").doc('02012001').get().then((
-                value) {
-              firestoreInstance.collection("Operators")
-                  .doc('02012001'/*firebaseUser.uid*/)
-                  .update({
-                "Mode Of Payment": FieldValue.arrayUnion(['Cash']),
-              });
-            });
           }
         }
     );
   }
-}
 
+  Future storeCustomerInformation() async{
+    paymentArray.add(paymentChoice);
+
+    final firestoreInstance = FirebaseFirestore.instance;
+    /*final auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;*/
+
+    firestoreInstance.collection("Operators").doc('02012001'/*user!.uid*/).set({
+      "Payment Mode": paymentArray,
+    }, SetOptions(merge: true)).then((value) {});
+  }
+
+  getCustomerInformation(){
+    final firestoreInstance = FirebaseFirestore.instance;
+    /*final auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;*/
+    firestoreInstance.collection("Operators").doc('02012001'/*user!.uid*/).get().then((value){
+      setState(() {
+        paymentArray = value.data()!["Payment Mode"];
+      });
+    });
+  }
+}
 
 class MyHttpOverrides extends HttpOverrides {
   @override

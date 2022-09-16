@@ -15,85 +15,128 @@ class _CustomerInformationState extends State<CustomerInformation> {
   final formKey=GlobalKey<FormState>();
   String _customerName="", _email="", choice="";
   var _contactNo;
+  String _address="", _city="", _state="", _pincode="";
+  List addressArray=[], cityArray=[], stateArray=[], pincodeArray=[];
   Color emailText=Colors.black, whatsappText=Colors.black;
   Color emailColor = Colors.white, whatsappColor = Colors.white;
-  List<dynamic> customerNameArray=[], customerPhoneArray=[], customerEmailArray=[];
+  List<dynamic> customerNameArray=[], customerPhoneArray=[], customerEmailArray=[], choiceArray=[], orderNoArray=[],
+      productNameArray=[], productPriceArray=[];
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     getCustomerInformation();
     return Scaffold(
-      key: _scaffoldKey,
       appBar: buildAppBar(context, 'Customer Information'),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(10),
           padding: EdgeInsets.all(10),
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: width,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    child: Text('Operator ID: 02012001', style: TextStyle(
-                        fontSize: 16
-                    ),)),
-                TextFormField(
-                  onChanged: (value){
-                    setState(() {
-                      _customerName=value.trim();
-                    });
-                  },
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                      labelText: 'Customer Name'
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  width: width,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade200),
+                      borderRadius: BorderRadius.circular(10)
                   ),
+                  child: Text('Operator ID: 02012001', style: TextStyle(
+                      fontSize: 16
+                  ),)),
+              TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _customerName=value.trim();
+                  });
+                },
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                    labelText: 'Customer Name'
                 ),
-                TextFormField(
-                  onChanged: (value){
-                    setState(() {
-                      _contactNo=value.trim();
-                    });
-                  },
-                  keyboardType: TextInputType.phone,
-                  maxLength: 10,
-                  decoration: InputDecoration(
-                    labelText: 'Contact Number',
-                  ),
+              ),
+              TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _contactNo=value.trim();
+                  });
+                },
+                keyboardType: TextInputType.phone,
+                maxLength: 10,
+                decoration: InputDecoration(
+                  labelText: 'Contact Number',
                 ),
-                TextFormField(
-                  onChanged: (value){
-                    setState(() {
-                      _email=value.trim();
-                    });
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'Email ID',
-                  ),
+              ),
+              TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _email=value.trim();
+                  });
+                },
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email ID',
                 ),
-                SizedBox(height: 15,),
-                Center(
-                  child: Text('Choice of Business Communication',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18
-                    ),),
+              ),
+              TextField(
+                onChanged: (value){
+                  setState(() {
+                    _address=value.trim();
+                  });
+                },
+                keyboardType: TextInputType.streetAddress,
+                maxLines: 2,
+                decoration: InputDecoration(
+                  labelText: 'Address',
+
                 ),
-                SizedBox(height: 15,),
-                choiceOfBusinessCommunication(),
-                //ChoiceOfBusinessCommunication(),
-                proceedToCheckoutButton(width)
-              ],
-            ),
+              ),
+              TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _city=value.trim();
+                  });
+                },
+                decoration: InputDecoration(
+                    labelText: 'City'
+                ),
+              ),
+              TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _state=value.trim();
+                  });
+                },
+                decoration: InputDecoration(
+                    labelText: 'State'
+                ),
+              ),
+              TextFormField(
+                onChanged: (value){
+                  setState(() {
+                    _pincode=value.trim();
+                  });
+                },
+                maxLength: 6,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: 'Pincode'
+                ),
+              ),
+
+              Center(
+                child: Text('Choice of Business Communication',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18
+                  ),),
+              ),
+              SizedBox(height: 15,),
+              choiceOfBusinessCommunication(),
+              //ChoiceOfBusinessCommunication(),
+              proceedToCheckoutButton(width),
+            ],
           ),
         ),
       ),
@@ -103,7 +146,7 @@ class _CustomerInformationState extends State<CustomerInformation> {
   InkWell proceedToCheckoutButton(var width){
     return InkWell (
       onTap: (){
-        if(_customerName=="" || _contactNo=="" || _email==""){
+        if(_customerName=="" || _contactNo=="" || _email=="" || _address=="" || _city=="" || _state=="" || _pincode==""){
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Fill all the entries')));
         }
         else if(choice==""){
@@ -203,17 +246,29 @@ class _CustomerInformationState extends State<CustomerInformation> {
     customerNameArray.add(_customerName);
     customerEmailArray.add(_email);
     customerPhoneArray.add(_contactNo);
-    print(customerNameArray);
+    choiceArray.add(choice);
+    orderNoArray.add('45866426');
+    productNameArray.add('45866426');
+    productPriceArray.add('45866426');
+    addressArray.add(_address);
+    cityArray.add(_city);
+    stateArray.add(', $_state');
+    pincodeArray.add(', $_pincode');
+
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001').get().then((
-        value) {
-      firestoreInstance.collection("Operators")
-          .doc('02012001'/*firebaseUser.uid*/).update({
-        "Customer Name": FieldValue.arrayUnion(customerNameArray),
-        "Customer Phone": FieldValue.arrayUnion(customerPhoneArray),
-        "Customer Email": FieldValue.arrayUnion(customerEmailArray),
-      });
-    });
+    firestoreInstance.collection("Operators").doc('02012001').set({
+      "Customer Name": customerNameArray,
+      "Customer Phone": customerPhoneArray,
+      "Customer Email": customerEmailArray,
+      "Choice" : choiceArray,
+      "Order No" : orderNoArray,
+      "Customer Address": addressArray,
+      "Customer City": cityArray,
+      "Customer State": stateArray,
+      "Product Name" : productNameArray,
+      "Product Price" : productPriceArray,
+      "Customer Pincode": pincodeArray,
+    }, SetOptions(merge: true)).then((value) {});
   }
 
   getCustomerInformation(){
@@ -223,6 +278,14 @@ class _CustomerInformationState extends State<CustomerInformation> {
         customerNameArray = value.data()!["Customer Name"];
         customerEmailArray = value.data()!["Customer Email"];
         customerPhoneArray = value.data()!["Customer Phone"];
+        choiceArray = value.data()!["Choice"];
+        addressArray = value.data()!["Customer Address"];
+        cityArray = value.data()!["Customer City"];
+        stateArray = value.data()!["Customer State"];
+        pincodeArray = value.data()!["Customer Pincode"];
+        orderNoArray = value.data()!["Order No"];
+        productNameArray = value.data()!["Product Name"];
+        productPriceArray = value.data()!["Product Price"];
       });
     });
   }

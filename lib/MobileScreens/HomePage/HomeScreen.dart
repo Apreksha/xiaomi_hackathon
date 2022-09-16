@@ -1,8 +1,10 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:xiaomi_hackathon/MobileScreens/Profile.dart';
+import 'package:xiaomi_hackathon/MobileScreens/ProductDescription/products_details.dart';
+import 'package:xiaomi_hackathon/MobileScreens/Profile/Profile_main.dart';
 import 'package:xiaomi_hackathon/MobileScreens/productDB.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import '../SearchBar.dart';
 import 'CategoriesWidget.dart';
 import 'HomeAppBar.dart';
 import 'ItemsWidget.dart';
@@ -16,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int homeIndex=0;
-
+  late List allproducts;
   @override
   Widget build(BuildContext context) {
 
@@ -24,15 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
     double _w = MediaQuery.of(context).size.width;
 
     void _scan(){
-      setState(() async{
-        String _data = await FlutterBarcodeScanner.scanBarcode(
-            '#000000', "Cancel", true, ScanMode.BARCODE);
-        print('dataaaaaaaa.............. $_data');
+      setState(() { FlutterBarcodeScanner.scanBarcode(
+            '#000000', "Cancel", true, ScanMode.BARCODE).then((value)=>Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ProductDetails(name: allproducts[7]['name'][1], discountprice: allproducts[7]['discountPrice'][1], price: allproducts[7]['price'][1], imageMap: allproducts[7]['images'][1])),
+        ));
       });
     }
 
     return FutureBuilder(
-        future: productDB().productDetails(),
+        future: productDB().productDetails().then((value) =>allproducts = value),
         builder: (context,snapshot){
           if(snapshot.hasData){
             return Scaffold(
@@ -55,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 animationCurve: Curves.fastLinearToSlowEaseIn,
               ),
 
-              body: homeIndex == 1 ? const Profile():ListView(
+              body: homeIndex == 1 ? const ProfileMain():ListView(
                 children: [
                   const HomeAppBar(),
                   Container(
@@ -78,15 +81,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(30),
                           ),
                           child: Row(children: [
-                            Container(
-                              margin: const EdgeInsets.only(left: 5),
-                              height: 50,
-                              width: 290,
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Search here....",
-                                ),
+                            GestureDetector(
+                              onTap: ()=>showSearch(context: context, delegate: DataSearch()),
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 5),
+                                alignment: Alignment.center,
+                                child: Text('Search here....'),
                               ),
                             ),
                             const Spacer(),

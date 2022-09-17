@@ -1,12 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:xiaomi_hackathon/MobileScreens/Categories/categories.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:xiaomi_hackathon/MobileScreens/HomePage/HomeScreen.dart';
-import 'package:xiaomi_hackathon/MobileScreens/LoginScreen.dart';
-import 'package:xiaomi_hackathon/MobileScreens/OrderHistory/order_history.dart';
-import 'package:xiaomi_hackathon/MobileScreens/SplashScreen.dart';
-
+import 'package:xiaomi_hackathon/OfflineMode/MobileScreens/OfflineForm.dart';
+import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/SplashScreen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if(kIsWeb){
@@ -19,6 +16,8 @@ Future<void> main() async {
     );
 
   }else{
+    await Hive.initFlutter();
+    var box = await Hive.openBox('mybox');
     await Firebase.initializeApp();
   }
   /*SharedPreferences preferences=await SharedPreferences.getInstance();
@@ -35,16 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:HomeScreen(),
-      routes: <String, WidgetBuilder>{
-        'login': (BuildContext context) => new MyCustomLoginUI(),
-        //'categoriesBody': (BuildContext context) => new Categories_Body(categoryIndex:0),
-        'categories': (BuildContext context) => new Categories(),
-       // 'checkout' : (BuildContext context) => new Checkout(),
-        'orderHistory': (BuildContext context) => new OrderHistory(),
-        //'cart': (BuildContext context) => new Cart(),
-        'splashScreen': (BuildContext context) => new SplashScreen(),
-      }
+      home:SplashScreen(),
     );
   }
 }

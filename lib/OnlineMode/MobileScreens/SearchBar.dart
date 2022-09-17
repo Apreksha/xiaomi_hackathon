@@ -126,7 +126,6 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    productDB().productDetails().then((value) => allproducts=value);
     final suggestionList = query.isEmpty
         ?recentTopic
         :topics.where((element) => element.startsWith(query)).toList();

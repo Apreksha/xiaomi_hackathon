@@ -5,8 +5,10 @@ import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/productDB.dart';
 import 'HomePage/HomeScreen.dart';
 
 class DataSearch extends SearchDelegate<String> {
-  late String TopicName;
   late List alldata;
+  DataSearch({required this.alldata});
+  late String TopicName;
+
   bool cross=false;
   final List topics=[
     'Mi NoteBook Ultra',
@@ -124,7 +126,6 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    late List allproducts;
     productDB().productDetails().then((value) => allproducts=value);
     final suggestionList = query.isEmpty
         ?recentTopic

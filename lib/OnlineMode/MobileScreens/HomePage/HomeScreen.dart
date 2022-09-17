@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Row(children: [
                             GestureDetector(
-                              onTap: ()=>showSearch(context: context, delegate: DataSearch()),
+                              onTap: ()=>showSearch(context: context, delegate: DataSearch(alldata: allproducts)),
                               child: Container(
                                 margin: const EdgeInsets.only(left: 5),
                                 alignment: Alignment.center,

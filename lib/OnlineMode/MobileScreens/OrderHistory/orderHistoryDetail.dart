@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/OrderHistory/trackingOrder.dart';
+
 import '../appBar.dart';
 import '../loadingScreen.dart';
 
@@ -22,7 +23,6 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
   @override
   Widget build(BuildContext context) {
     getInformation();
-    getProductInformation();
     var width = MediaQuery.of(context).size.width;
 
     return loading==false ? Scaffold(
@@ -208,27 +208,17 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
         orderNo = value.data()!["Order No"][widget.index];
         paymentMode = value.data()!["Payment Mode"][widget.index];
         choiceOfBusinessCommunication = value.data()!["Choice"][widget.index];
-
-        if(value.data()!["Customer Name"]!= null || value.data()!["Customer Email"]!= null || value.data()!["Customer Phone"]!= null ||
-            value.data()!["Customer Address"]!= null || value.data()!["Customer City"]!= null || value.data()!["Customer State"]!= null ||
-            value.data()!["Customer Pincode"]!= null || value.data()!["Order No"]!= null || value.data()!["Payment Mode"]!= null ||
-            value.data()!["Choice"]!= null){
-          loading = false;
-        }
-      });
-    });
-  }
-
-  getProductInformation(){
-    final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).get().then((value){
-      setState(() {
         productName = value.data()!["Product Name"][widget.index];
         productPrice = value.data()!["Product Price"][widget.index];
         image = value.data()!["Product Image"][widget.index];
 
-        if(value.data()!["Product Image"]!= null || value.data()!["Product Price"]!= null || value.data()!["Product Name"]!= null)
+        if(value.data()!["Customer Name"]!= null || value.data()!["Customer Email"]!= null || value.data()!["Customer Phone"]!= null ||
+            value.data()!["Customer Address"]!= null || value.data()!["Customer City"]!= null || value.data()!["Customer State"]!= null ||
+            value.data()!["Customer Pincode"]!= null || value.data()!["Order No"]!= null || value.data()!["Payment Mode"]!= null ||
+            value.data()!["Choice"]!= null || value.data()!["Product Image"]!= null || value.data()!["Product Price"]!= null ||
+            value.data()!["Product Name"]!= null){
           loading = false;
+        }
       });
     });
   }

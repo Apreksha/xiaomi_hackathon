@@ -148,6 +148,17 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   }
 
   getCustomerInformation(){
+
+
+
+
+    if(widget.custName!= '' || widget.custEmail!= '' || widget.custPhone!= '' || widget.orderNo!= '' || widget.total!=0
+        || widget.choice!='') {
+      loading = false;
+    }
+  }
+
+  deleteCart(){
     for(int i=0; i<cartProductName.length; i++){
       productNameArray.add(cartProductName[i]);
       productPriceArray.add(cartProductPrice);
@@ -161,15 +172,8 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
       "Product Image": productImageArray,
     }, SetOptions(merge: true)).then((value) {});
 
-    if(widget.custName!= null || widget.custEmail!= null || widget.custPhone!= null || widget.orderNo!= null || widget.total!=null
-        || widget.choice!=null) {
-      loading = false;
-    }
-  }
-
-  deleteCart(){
-    final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).delete();
+    final cartFirestoreInstance = FirebaseFirestore.instance;
+    cartFirestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).delete();
   }
 
   getProductInformation(){

@@ -16,8 +16,7 @@ class _ShowOrderDetailsState extends State<ShowOrderDetails> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-
-    return SingleChildScrollView(
+    return Container(
       child: Column(
         children: [
           Container(
@@ -34,50 +33,37 @@ class _ShowOrderDetailsState extends State<ShowOrderDetails> {
                 border: Border.all(color: Colors.black,),
                 borderRadius: BorderRadius.circular(20)
             ),
-            child: Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(child: Text('Order ID: ${widget.orderNo}', style: TextStyle( fontSize: 17),)),
-                  SizedBox(height: 12,),
-                  Container(
-                    height: height * widget.productPrice.length * 0.025,
-                    margin: EdgeInsets.only(top: 10),
-                    child: ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: widget.productPrice.length,
-                        itemBuilder: (context, index){
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(widget.productName[index], style: TextStyle(color: Colors.black, fontSize: 15),),
-                              Text('₹ ${widget.productPrice[index]}', style: TextStyle(color: Colors.black, fontSize: 15),),
-                            ],
-                          );
-                        }),
-                  ),
-                  SizedBox(height: 12,),
-                  showPriceDetails('Subtotal', widget.total),
-                  showPriceDetails('Delivery Charges', 0),
-                  showPriceDetails('Total', widget.total),
-
-                  Divider(
-                    color: Colors.grey,
-                  ),
-                  SizedBox(height: 10,),
-                  Text('Customer Details', style: TextStyle(color: Colors.grey.shade600, fontSize: 15)),
-                  SizedBox(height: 15,),
-                  Text('Name: ${widget.customerName}', style: TextStyle(color: Colors.black, fontSize: 17),),
-                  //SizedBox(width: 10,),
-                  Text('Phone: ${widget.customerPhone}', style: TextStyle(color: Colors.black, fontSize: 17),),
-                  Text('Email: ${widget.customerEmail}', style: TextStyle(color: Colors.black, fontSize: 17),),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(child: Text('Order ID: ${widget.orderNo}', style: TextStyle( fontSize: 17),)),
+                SizedBox(height: 12,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(widget.productName[0], style: TextStyle(color: Colors.black, fontSize: 15),),
+                    Text('₹ ${widget.productPrice[0]}', style: TextStyle(color: Colors.black, fontSize: 15),),
+                  ],
+                ),
+                SizedBox(height: 12,),
+                showPriceDetails('Subtotal', widget.productPrice[0]),
+                showPriceDetails('Delivery Charges', 0),
+                showPriceDetails('Total', widget.productPrice[0]),
+                Divider(
+                  color: Colors.grey,
+                ),
+                SizedBox(height: 10,),
+                Text('Customer Details', style: TextStyle(color: Colors.grey.shade600, fontSize: 15)),
+                SizedBox(height: 15,),
+                Text('Name: ${widget.customerName}', style: TextStyle(color: Colors.black, fontSize: 17),),
+                Text('Phone: ${widget.customerPhone}', style: TextStyle(color: Colors.black, fontSize: 17),),
+                Text('Email: ${widget.customerEmail}', style: TextStyle(color: Colors.black, fontSize: 17),),
+              ],
             ),
           ),
         ],
       ),
-    ) ;
+    );
   }
 
   Column showPriceDetails(String heading, int price){

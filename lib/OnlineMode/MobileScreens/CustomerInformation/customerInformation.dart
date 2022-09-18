@@ -31,9 +31,9 @@ class _CustomerInformationState extends State<CustomerInformation> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-    getCustomerInformation();
     getProductInformation();
-    return loading==false ? Scaffold(
+
+    return Scaffold(
       appBar: buildAppBar(context, 'Customer Information'),
       body: SingleChildScrollView(
         child: Container(
@@ -144,7 +144,7 @@ class _CustomerInformationState extends State<CustomerInformation> {
           ),
         ),
       ),
-    ) : LoadingScreen();
+    );
   }
 
   InkWell proceedToCheckoutButton(var width){
@@ -160,7 +160,8 @@ class _CustomerInformationState extends State<CustomerInformation> {
           storeCustomerInformation();
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Checkout(choice: choice, custName: _customerName, custAdd: _address, custCity: _city,
-                custEmail: _email, custPhone: _contactNo, custPincode: _pincode, custState: _state, orderNo: '45866426', total: total,prodName: cartProductName,prodPrice: cartProductPrice,
+                custEmail: _email, custPhone: _contactNo, custPincode: _pincode, custState: _state, orderNo: '45866426',
+                total: total, prodName: cartProductName, prodPrice: cartProductPrice,
               )));
         }
       },
@@ -281,27 +282,6 @@ class _CustomerInformationState extends State<CustomerInformation> {
       'isVerified':isVerified,
       'email':email
     }, SetOptions(merge: true)).then((value) {});
-  }
-
-  getCustomerInformation(){
-    final firestoreInstance = FirebaseFirestore.instance;
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).get().then((value){
-      setState(() {
-        customerNameArray = value.data()!["Customer Name"];
-        customerEmailArray = value.data()!["Customer Email"];
-        customerPhoneArray = value.data()!["Customer Phone"];
-        choiceArray = value.data()!["Choice"];
-        addressArray = value.data()!["Customer Address"];
-        cityArray = value.data()!["Customer City"];
-        stateArray = value.data()!["Customer State"];
-        pincodeArray = value.data()!["Customer Pincode"];
-        orderNoArray = value.data()!["Order No"];
-        email = value.data()!['email'];
-        isVerified = value.data()!['isVerified'];
-        name = value.data()!['name'];
-      });
-    });
   }
 
   getProductInformation(){

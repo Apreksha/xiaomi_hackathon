@@ -37,11 +37,11 @@ class _FormUIState extends State<FormUI> {
 
   @override
   Widget build(BuildContext context) {
-  double width = MediaQuery.of(context).size.width;
-  double _h = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double _h = MediaQuery.of(context).size.height;
 
-  readData();
-  return Scaffold(
+    readData();
+    return Scaffold(
       appBar: AppBar(
         title: Text('Customer Information'),
       ),
@@ -76,7 +76,7 @@ class _FormUIState extends State<FormUI> {
               TextFormField(
                 onChanged: (value){
                   setState(() {
-                     _contactNo=value.trim();
+                    _contactNo=value.trim();
                   });
                 },
                 keyboardType: TextInputType.phone,
@@ -172,8 +172,8 @@ class _FormUIState extends State<FormUI> {
                     padding: EdgeInsets.symmetric(horizontal: width/10,vertical: _h/60),
                     color: Colors.orange,
                     child: Text('Purchase',style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold
                     ),),
                   ),
                 ),

@@ -72,7 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
             if(value!='-1') {
               Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ProductDetails(categoryIndex: 7,name: allproducts[7]['name'][1], discountprice: allproducts[7]['discountPrice'][1], price: allproducts[7]['price'][1], imageMap: allproducts[7]['images'][1])),
+        MaterialPageRoute(builder: (context) => ProductDetails(categoryIndex: 7,name: allproducts[7]['name'][1],
+            discountprice: allproducts[7]['discountPrice'][1], price: allproducts[7]['price'][1], imageMap: allproducts[7]['images'][1])),
       );
             }});
       });

@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/Checkout/razor_credentials.dart' as razorCredentials;
 import 'package:flutter/material.dart';
 import '../PaymentSuccess/payment_success.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class ChoosePayment extends StatefulWidget {
   final String choice, custName, custPhone, custEmail, orderNo;
@@ -215,28 +217,26 @@ class _ChoosePaymentState extends State<ChoosePayment> {
     }
 
     final firestoreInstance = FirebaseFirestore.instance;
-    /*final auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;*/
-
-    firestoreInstance.collection("Operators").doc('02012001'/*user!.uid*/).set({
-      "Payment Mode": paymentArray,
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).set({
+      "paymentMode": paymentArray,
     }, SetOptions(merge: true)).then((value) {});
   }
 
   getCustomerInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    /*final auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;*/
-    firestoreInstance.collection("Operators").doc('02012001'/*user!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).get().then((value){
       setState(() {
-        paymentArray = value.data()!["Payment Mode"];
+        paymentArray = value.data()!["paymentMode"];
       });
     });
   }
 
   getProductInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("cart").doc(firebaseUser!.uid).get().then((value){
       setState(() {
         cartProductName = value.data()!["Product Name"];
       });

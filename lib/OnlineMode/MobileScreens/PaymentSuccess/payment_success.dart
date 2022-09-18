@@ -4,6 +4,7 @@ import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/PaymentSuccess/whatsap
 import '../HomePage/HomeScreen.dart';
 import '../loadingScreen.dart';
 import 'email.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PaymentSuccess extends StatefulWidget {
   final String choice, custName, custPhone, custEmail, orderNo;
@@ -16,7 +17,7 @@ class PaymentSuccess extends StatefulWidget {
 
 class _PaymentSuccessState extends State<PaymentSuccess> {
   bool loading = true;
-  List cartProductName=[], cartProductPrice=[], cartProductImage=[], productImageArray=[], productNameArray=[], productPriceArray=[];
+  List cartProductImage=[], productImageArray=[], productNameArray=[], productPriceArray=[];
 
   @override
   void init(){
@@ -36,8 +37,14 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
         child: Column(
           children: [
             successBox(height, width),
-            SizedBox(height: 20,),
-            showButton('Print', 'assets/icons/print.png'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                showButton('Share', 'assets/icons/share.png'),
+                SizedBox(width: 20,),
+                showButton('Print', 'assets/icons/print.png'),
+              ],
+            ),
             SizedBox(height: 30,),
             ElevatedButton(
                 style: ButtonStyle(
@@ -114,7 +121,7 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
                     ),
                   ),
                   Text(
-                    'Payment Successful for ${cartProductName.length} items',
+                    'Payment Successful for ${cartProductImage.length} items',
                     style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -148,10 +155,6 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   }
 
   getCustomerInformation(){
-
-
-
-
     if(widget.custName!= '' || widget.custEmail!= '' || widget.custPhone!= '' || widget.orderNo!= '' || widget.total!=0
         || widget.choice!='') {
       loading = false;
@@ -159,29 +162,25 @@ class _PaymentSuccessState extends State<PaymentSuccess> {
   }
 
   deleteCart(){
-    for(int i=0; i<cartProductName.length; i++){
-      productNameArray.add(cartProductName[i]);
-      productPriceArray.add(cartProductPrice);
-      productImageArray.add(cartProductImage);
+    for(int i=0; i<cartProductImage.length; i++){
+      productImageArray.add(cartProductImage[i]);
     }
 
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001').set({
-      "Product Name": productNameArray,
-      "Product Price": productPriceArray,
-      "Product Image": productImageArray,
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).set({
+      "prodImage": productImageArray,
     }, SetOptions(merge: true)).then((value) {});
 
     final cartFirestoreInstance = FirebaseFirestore.instance;
-    cartFirestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).delete();
+    cartFirestoreInstance.collection("cart").doc(firebaseUser.uid).delete();
   }
 
   getProductInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("cart").doc(firebaseUser!.uid).get().then((value){
       setState(() {
-        cartProductName = value.data()!["Product Name"];
-        cartProductPrice = value.data()!["Product Price"];
         cartProductImage = value.data()!["Product Image"];
       });
     });

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/ProductDescription/products_details.dart';
 import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/productDB.dart';
 
 import 'HomePage/HomeScreen.dart';
@@ -8,50 +9,15 @@ class DataSearch extends SearchDelegate<String> {
   late List alldata;
   DataSearch({required this.alldata});
   late String TopicName;
-
   bool cross=false;
+
+  final List discountPrice=[
+    66999,28999,26999,25999,29999,23999,69999,41999,38999];
+
+  final List price=[
+    84999,33999,31999,33999,34999,25999,74999,54999,49999];
+
   final List topics=[
-    'Mi NoteBook Ultra',
-    'Xiaomi Notebook Pro',
-    'Mi Notebook Pro',
-    'Mi Notebook 14 Horizon',
-    'Mi NoteBook Ultra Win 11',
-    'Mi Notebook 14(IC)',
-    'Mi Notebook 14 E-Learning Edition',
-    "RedmiBook 15 Pro",
-    "RedmiBook 15",
-    "RedmiBook 15",
-    "RedmiBook 15 Pro",
-    "Mi 30W Wireless Charger",
-    "Mi Car Charger Basic",
-    "Mi 18W Dual Port Charger",
-    "Mi USB Type C Cable",
-    "Xiaomi 6A HyperCharge Cable",
-    "Xiaomi Pad 5 Cover",
-    "Xiaomi Smart Pen",
-    "Mi Webcam HD",
-    "Mi Portable Wireless Mouse White",
-    "Mi Step Out Backpack (Pack of 3)",
-    "Mi Step Out Backpack (Pack of 2)",
-    "Mi Organic Solid T-Shirt",
-    "Mi Smart LED Bulb",
-    "Mi Step Out Backpack Royal Blue",
-    "Mi Business Casual Backpack Blue",
-    "Redmi Smart TV",
-    "Redmi Smart TV 32",
-    "Redmi Smart TV 43",
-    "Redmi Smart TV 4K",
-    "Redmi Smart TV 4K Ultra",
-    "Redmi K50i 5G",
-    "Redmi Note 11 Pro+ 5G",
-    "Redmi Note 11T 5G",
-    "Redmi Note 11 SE",
-    "Redmi Note 11S",
-    "Redmi Note 11 Pro",
-    "Mi Robot Vacuum",
-    "Xiaomi Smart Air Fryer + Smart Speaker",
-    "Mi Air Purifier Filter",
-    "Mi Air Purifier 3",
     "Xiaomi 12 Pro 5G",
     "Xiaomi 11i Hypercharge 5G",
     "Xiaomi 11i 5G",
@@ -59,17 +25,17 @@ class DataSearch extends SearchDelegate<String> {
     "Mi 11X 5G",
     "Mi 11 Lite",
     "Mi 11 Ultra 5G",
-    "Xiaomi Smart TV 5A Pro",
-    "Mi LED TV 4A PRO",
-    "Mi QLED TV 75",
-    "Mi TV 4A Horizon",
+    "Xiaomi 11T Pro 5G",
+    "Mi 11X Pro 5G"
   ];
+
   final recentTopic = [
-    "Redmi Smart TV",
-    "Mi NoteBook Ultra",
-    "Redmi Note 11T 5G",
-    "Mi QLED TV 75"
+    "Xiaomi 11i 5G",
+    "Xiaomi 11 Lite NE 5G",
+    "Mi 11X 5G",
+    "Mi 11 Lite",
   ];
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return[
@@ -93,8 +59,6 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    late List allproducts;
-    productDB().productDetails().then((value) => allproducts=value);
     final suggestionList = query.isEmpty
         ?recentTopic
         :topics.where((element) => element.startsWith(query)).toList();
@@ -102,13 +66,12 @@ class DataSearch extends SearchDelegate<String> {
       onTap:()async{
         showResults(context);
         TopicName= suggestionList[index];
-        int indexes;
-        if(alldata[0]['name'].contain(TopicName)){
-        indexes =   alldata[0]['name'].indexOf(TopicName);
-        }else{
-          indexes=10;
-        }
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen()));
+
+        int indexes = alldata[7]['name'].indexOf(TopicName);
+
+        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProductDetails(categoryIndex:7,name: TopicName,
+            discountprice: discountPrice[index], price: price[index],
+            imageMap: alldata[7]['images'][indexes])));
       } ,
       leading: Icon(Icons.code),
       title: RichText(text: TextSpan(
@@ -133,13 +96,15 @@ class DataSearch extends SearchDelegate<String> {
       onTap:()async{
         showResults(context);
         TopicName= suggestionList[index];
-        int indexes = topics.indexOf(TopicName);
-        if(alldata[0]['name'].contain(TopicName)){
-          indexes =   alldata[0]['name'].indexOf(TopicName);
+        int indexes;
+        if(alldata[7]['name'].contain(TopicName)){
+          indexes = alldata[7]['name'].indexOf(TopicName);
         }else{
           indexes=10;
         }
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HomeScreen()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ProductDetails(categoryIndex:7,name: TopicName,
+            discountprice: alldata[7]['discountPrice'][indexes], price: alldata[7]['price'][indexes],
+            imageMap: alldata[7]['images'][indexes])));
       } ,
       leading: Icon(Icons.code),
       title: RichText(text: TextSpan(

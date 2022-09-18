@@ -20,7 +20,7 @@ class DatabaseService {
   final CollectionReference myCollection = FirebaseFirestore.instance
       .collection('Operators');
 
-  Future updateUserData(String name,String email,bool isVerified,List choice,List custAdd,List custCity,List custEmail,List custName,List custPhone,List custPincode,List custState,List orderNo,List prodName,List prodPrice, List paymentMode) async {
+  Future updateUserData(String name,String email,bool isVerified,List choice,List custAdd,List custCity,List custEmail,List custName,List custPhone,List custPincode,List custState,List orderNo,List prodName,List prodPrice, List paymentMode,List prodImage,int total) async {
     return await myCollection.doc(uid).set({
       'name':name,
       'email':email,
@@ -36,7 +36,9 @@ class DatabaseService {
       'orderNo':orderNo,
       'prodName':prodName,
       'prodPrice':prodPrice,
-      'paymentMode':paymentMode
+      'paymentMode':paymentMode,
+      'prodImage':prodImage,
+      'total':total
     });
   }
 

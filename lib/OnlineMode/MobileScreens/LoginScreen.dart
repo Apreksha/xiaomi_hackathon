@@ -1,10 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/storeInformation.dart';
 
 import 'HomePage/HomeScreen.dart';
 import 'SignUp.dart';
@@ -18,6 +20,8 @@ class _MyCustomLoginUIState extends State<MyCustomLoginUI>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  final _myBox = Hive.box('mybox');
+
 
   @override
   void initState() {
@@ -229,8 +233,9 @@ class _MyCustomLoginUIState extends State<MyCustomLoginUI>
           if ((value.data()!["isVerified"]) == true ){
              SharedPreferences prefs = await SharedPreferences.getInstance();
              prefs.setBool('remember', true);
+             _myBox.put('loggedIn', true);
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => HomeScreen()));
+                MaterialPageRoute(builder: (context) => StoreInformation()));
           }
           else{
             Fluttertoast.showToast(

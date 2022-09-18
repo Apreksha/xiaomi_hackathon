@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../CustomerInformation/customerInformation.dart';
 import '../appBar.dart';
 import '../loadingScreen.dart';
-import '../productDB.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'cart_body.dart';
 
 class Cart extends StatefulWidget {
@@ -100,7 +100,8 @@ class _CartState extends State<Cart> {
 
   getProductInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("cart").doc(firebaseUser!.uid).get().then((value){
       setState(() {
         productNameArray = value.data()!["Product Name"];
         productPriceArray = value.data()!["Product Price"];

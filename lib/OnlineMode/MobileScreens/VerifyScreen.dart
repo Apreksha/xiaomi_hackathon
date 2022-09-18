@@ -3,7 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
+import 'package:hive/hive.dart';
+import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/storeInformation.dart';
 import 'HomePage/HomeScreen.dart';
 
 
@@ -16,8 +17,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
   final auth =FirebaseAuth.instance;
   late User user;
   late Timer timer;
-
-
+  final _myBox = Hive.box('mybox');
   @override
   void initState(){
     user = auth.currentUser!;
@@ -87,8 +87,12 @@ class _VerifyScreenState extends State<VerifyScreen> {
     if(user.emailVerified){
       firestoreInstance.collection("Operators")
           .doc(firebaseUser!.uid)
-          .update({'isVerified': isVerified }).then((_) => Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen())));
+          .update({'isVerified': isVerified }).then((_) {
+            _myBox.put('loggedIn', true);
+            Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) =>StoreInformation()));
+
+          });
       timer.cancel();
     }
   }

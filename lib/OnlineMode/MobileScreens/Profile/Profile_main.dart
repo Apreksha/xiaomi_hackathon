@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../OrderHistory/order_history.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'StackContainer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class ProfileMain extends StatefulWidget {
   const ProfileMain({Key? key}) : super(key: key);
@@ -11,7 +13,7 @@ class ProfileMain extends StatefulWidget {
 }
 
 class _ProfileMainState extends State<ProfileMain> {
-  int points=0;
+  List orderNoArray = [];
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class _ProfileMainState extends State<ProfileMain> {
                 ),
               ),
               Spacer(),
-              Text(points.toString(),
+              Text((orderNoArray.length*100).toString(),
                 style: TextStyle(
                     fontSize: 18
                 ),)
@@ -105,11 +107,10 @@ class _ProfileMainState extends State<ProfileMain> {
 
   getCustomerInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    /*final auth = FirebaseAuth.instance;
-    User? user = auth.currentUser;*/
-    firestoreInstance.collection("Operators").doc('02012001'/*user!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).get().then((value){
       setState(() {
-        points = value.data()!["Points"];
+        orderNoArray = value.data()!["orderNo"];
       });
     });
   }

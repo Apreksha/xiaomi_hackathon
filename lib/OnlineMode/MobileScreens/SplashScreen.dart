@@ -2,7 +2,9 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/LoginScreen.dart';
 
 import 'Categories/categories_main_page.dart';
 import 'HomePage/HomeScreen.dart';
@@ -14,7 +16,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-
+  final _myBox = Hive.box('mybox');
 
   double _fontSize = 2;
   double _containerSize = 1.5;
@@ -23,9 +25,13 @@ class _SplashScreenState extends State<SplashScreen>
 
   late AnimationController _controller;
   late Animation<double> animation1;
-
+  bool isLoggedIn= false;
   @override
   void initState() {
+
+    if(_myBox.get('loggedIn')!=null){
+      isLoggedIn = _myBox.get('loggedIn');
+    }
     super.initState();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 3));
@@ -55,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(Duration(seconds: 4), () {
       setState(() {
-        Navigator.pushReplacement(context, PageTransition(HomeScreen()));
+        Navigator.pushReplacement(context, PageTransition(isLoggedIn?HomeScreen():MyCustomLoginUI()));
       });
     });
   }
@@ -65,6 +71,7 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {

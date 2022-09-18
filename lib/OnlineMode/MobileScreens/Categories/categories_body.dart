@@ -36,11 +36,13 @@ class _Categories_BodyState extends State<Categories_Body> with SingleTickerProv
     double _w = MediaQuery.of(context).size.width;
     if(widget.CategoryIndex == 7 || widget.CategoryIndex == 0 || widget.CategoryIndex == 8){
       int tempInd;
-      if(widget.CategoryIndex ==7){
+      if(widget.CategoryIndex == 7){
         tempInd = widget.CategoryIndex-2;
-      }else if(widget.CategoryIndex == 0){
+      }
+      else if(widget.CategoryIndex == 0){
         tempInd = widget.CategoryIndex+1;
-      }else{
+      }
+      else{
         tempInd = widget.CategoryIndex-4;
       }
 
@@ -75,13 +77,14 @@ class _Categories_BodyState extends State<Categories_Body> with SingleTickerProv
             child: TabBarView(
                 controller: _tabController,
                 children:[
-                    productWidget(_w,widget.CategoryIndex),
-                    productWidget(_w,tempInd)
-                  ]),
+                  productWidget(_w,widget.CategoryIndex),
+                  productWidget(_w,tempInd)
+                ]),
           )
         ],
       );
-    }else{
+    }
+    else{
       return productWidget(_w,widget.CategoryIndex);
     }
 
@@ -105,7 +108,7 @@ class _Categories_BodyState extends State<Categories_Body> with SingleTickerProv
               child: ScaleAnimation(
                 duration: Duration(milliseconds: 1500),
                 curve: Curves.fastLinearToSlowEaseIn,
-                child: ItemCard(allproducts: widget.allproducts, index: index, CategoryIndex: catIndex,),
+                child: ItemCard(categoryIndex: widget.CategoryIndex, allproducts: widget.allproducts, index: index, CategoryIndex: catIndex,),
               ),
             ),
           );

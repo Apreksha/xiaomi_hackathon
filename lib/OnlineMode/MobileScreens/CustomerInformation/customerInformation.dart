@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/loadingScreen.dart';
 
 import '../Checkout/checkout.dart';
 import '../appBar.dart';
@@ -13,7 +14,6 @@ class CustomerInformation extends StatefulWidget {
 }
 
 class _CustomerInformationState extends State<CustomerInformation> {
-  final formKey=GlobalKey<FormState>();
   String _customerName="", _email="", choice="";
   var _contactNo;
   String _address="", _city="", _state="", _pincode="";
@@ -23,13 +23,17 @@ class _CustomerInformationState extends State<CustomerInformation> {
   List<dynamic> customerNameArray=[], customerPhoneArray=[], customerEmailArray=[], choiceArray=[], orderNoArray=[],
       productNameArray=[], productPriceArray=[], cartProductName=[], cartProductPrice=[];
   int total=0;
+  bool loading = true;
+  String name='';
+  bool isVerified=true;
+  String email='';
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     getCustomerInformation();
     getProductInformation();
-    return Scaffold(
+    return loading==false ? Scaffold(
       appBar: buildAppBar(context, 'Customer Information'),
       body: SingleChildScrollView(
         child: Container(
@@ -140,7 +144,7 @@ class _CustomerInformationState extends State<CustomerInformation> {
           ),
         ),
       ),
-    );
+    ) : LoadingScreen();
   }
 
   InkWell proceedToCheckoutButton(var width){
@@ -156,7 +160,7 @@ class _CustomerInformationState extends State<CustomerInformation> {
           storeCustomerInformation();
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Checkout(choice: choice, custName: _customerName, custAdd: _address, custCity: _city,
-                custEmail: _email, custPhone: _contactNo, custPincode: _pincode, custState: _state, orderNo: '45866426', total: total,
+                custEmail: _email, custPhone: _contactNo, custPincode: _pincode, custState: _state, orderNo: '45866426', total: total,prodName: cartProductName,prodPrice: cartProductPrice,
               )));
         }
       },
@@ -258,25 +262,31 @@ class _CustomerInformationState extends State<CustomerInformation> {
     }
 
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001').set({
-      "Customer Name": customerNameArray,
-      "Customer Phone": customerPhoneArray,
-      "Customer Email": customerEmailArray,
-      "Choice" : choiceArray,
-      "Order No" : orderNoArray,
-      "Customer Address": addressArray,
-      "Customer City": cityArray,
-      "Customer State": stateArray,
-      "Product Name" : cartProductName,
-      "Product Price" : cartProductPrice,
-      "Total" : total,
-      "Customer Pincode": pincodeArray,
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).set({
+      "custName": customerNameArray,
+      "custPhone": customerPhoneArray,
+      "custEmail": customerEmailArray,
+      "choice" : choiceArray,
+      "orderNo" : orderNoArray,
+      "custAdd": addressArray,
+      "custCity": cityArray,
+      "custState": stateArray,
+      "prodName" : cartProductName,
+      "prodPrice" : cartProductPrice,
+      "total" : total,
+      "custPincode": pincodeArray,
+      'name':name,
+      'isVerified':isVerified,
+      'email':email
     }, SetOptions(merge: true)).then((value) {});
   }
 
   getCustomerInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).get().then((value){
       setState(() {
         customerNameArray = value.data()!["Customer Name"];
         customerEmailArray = value.data()!["Customer Email"];
@@ -287,17 +297,25 @@ class _CustomerInformationState extends State<CustomerInformation> {
         stateArray = value.data()!["Customer State"];
         pincodeArray = value.data()!["Customer Pincode"];
         orderNoArray = value.data()!["Order No"];
+        email = value.data()!['email'];
+        isVerified = value.data()!['isVerified'];
+        name = value.data()!['name'];
       });
     });
   }
 
   getProductInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("cart").doc(firebaseUser!.uid).get().then((value){
       setState(() {
         cartProductName = value.data()!["Product Name"];
         cartProductPrice = value.data()!["Product Price"];
         total = value.data()!["total"];
+
+        if(value.data()!["total"]!= null || value.data()!["Product Price"]!= null || value.data()!["Product Name"]!= null){
+          loading = false;
+        }
       });
     });
   }

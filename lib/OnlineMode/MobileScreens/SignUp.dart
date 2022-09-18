@@ -170,7 +170,7 @@ signUp(String name,String _email,String _password,String _reEnterPassword, Build
         await auth.createUserWithEmailAndPassword(email: _email, password: _password).then(
                 (value) async{
                   User? user = auth.currentUser;
-                  await DatabaseService(uid: user!.uid).updateUserData(name,_email,isVerified,[],[],[],[],[],[],[],[],[],[],[],[]).then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyScreen())));
+                  await DatabaseService(uid: user!.uid).updateUserData(name,_email,isVerified,[],[],[],[],[],[],[],[],[],[],[],[],[],0).then((value) => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyScreen())));
 
              });
 

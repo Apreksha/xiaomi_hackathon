@@ -1,7 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../CartScreen/cart.dart';
 
 class HomeAppBar extends StatefulWidget {
@@ -16,7 +16,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    getCart('12345');
+    getCart();
     double _w = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.white,
@@ -28,7 +28,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Xiaomi Shop',
+                Text('Mi Store',
                   style: TextStyle(
                       fontSize: _w/15,
                       fontWeight: FontWeight.bold,
@@ -72,10 +72,11 @@ class _HomeAppBarState extends State<HomeAppBar> {
       ),
     );
   }
-  Future<DocumentSnapshot<Map<String,dynamic>>> getCart(String uid) async{
+  Future<DocumentSnapshot<Map<String,dynamic>>> getCart() async{
     final firestoreInstance = FirebaseFirestore.instance;
-    var currentUser = await firestoreInstance.collection('cart').doc(uid).get();
-    firestoreInstance.collection("cart").doc(uid/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    var currentUser = await firestoreInstance.collection('cart').doc(firebaseUser!.uid).get();
+    firestoreInstance.collection("cart").doc(firebaseUser.uid).get().then((value){
       setState((){
         len = value.data()!['productName'].length;
       });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../CartScreen/cart.dart';
 
@@ -86,7 +87,8 @@ class _CartButtonState extends State<CartButton> {
     total += widget.productPrice;
 
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345').set({
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("cart").doc(firebaseUser!.uid).set({
       "Product Name": productNameArray,
       "Product Price": productPriceArray,
       "Product Image": imageArray,
@@ -96,7 +98,8 @@ class _CartButtonState extends State<CartButton> {
 
   getProductInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("cart").doc('12345'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("cart").doc(firebaseUser!.uid).get().then((value){
       setState(() {
         productNameArray = value.data()!["Product Name"];
         productPriceArray = value.data()!["Product Price"];

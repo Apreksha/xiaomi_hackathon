@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:xiaomi_hackathon/OfflineMode/MobileScreens/OfflineForm.dart';
-import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/SplashScreen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/SplashScreen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if(kIsWeb){
@@ -20,9 +19,6 @@ Future<void> main() async {
     var box = await Hive.openBox('mybox');
     await Firebase.initializeApp();
   }
-  /*SharedPreferences preferences=await SharedPreferences.getInstance();
-  initScreen=(await preferences.getInt('initScreen'));
-  await preferences.setInt('initScreen', 1);*/
   runApp(MyApp());
 }
 

@@ -16,7 +16,6 @@ class _ShowOrderDetailsState extends State<ShowOrderDetails> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    int qty=3;
 
     return SingleChildScrollView(
       child: Column(

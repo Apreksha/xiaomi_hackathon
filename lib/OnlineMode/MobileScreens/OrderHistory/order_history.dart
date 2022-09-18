@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../appBar.dart';
 import '../loadingScreen.dart';
 import 'orderHistoryDetail.dart';
@@ -139,12 +139,13 @@ class _OrderHistoryState extends State<OrderHistory> {
 
   getCustomerInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).get().then((value){
       setState(() {
-        customerName = value.data()!["Customer Name"];
-        orderNo = value.data()!["Order No"];
-        productPrice = value.data()!["Product Price"];
-        if(value.data()!["Customer Name"]!= null || value.data()!["Order No"]!= null || value.data()!["Product Price"]!= null){
+        customerName = value.data()!["custName"];
+        orderNo = value.data()!["orderNo"];
+        productPrice = value.data()!["prodPrice"];
+        if(value.data()!["custName"]!= null || value.data()!["orderNo"]!= null || value.data()!["prodPrice"]!= null){
           loading = false;
         }
       });

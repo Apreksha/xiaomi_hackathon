@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/OrderHistory/trackingOrder.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import '../appBar.dart';
 import '../loadingScreen.dart';
 
@@ -196,27 +196,28 @@ class _OrderHistoryDetailsState extends State<OrderHistoryDetails> {
 
   getInformation(){
     final firestoreInstance = FirebaseFirestore.instance;
-    firestoreInstance.collection("Operators").doc('02012001'/*firebaseUser!.uid*/).get().then((value){
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    firestoreInstance.collection("Operators").doc(firebaseUser!.uid).get().then((value){
       setState(() {
-        customerName = value.data()!["Customer Name"][widget.index];
-        customerAddress = value.data()!["Customer Address"][widget.index];
-        customerCity = value.data()!["Customer City"][widget.index];
-        customerState = value.data()!["Customer State"][widget.index];
-        customerPincode = value.data()!["Customer Pincode"][widget.index];
-        customerEmail = value.data()!["Customer Email"][widget.index];
-        customerPhone = value.data()!["Customer Phone"][widget.index];
-        orderNo = value.data()!["Order No"][widget.index];
-        paymentMode = value.data()!["Payment Mode"][widget.index];
-        choiceOfBusinessCommunication = value.data()!["Choice"][widget.index];
-        productName = value.data()!["Product Name"][widget.index];
-        productPrice = value.data()!["Product Price"][widget.index];
-        image = value.data()!["Product Image"][widget.index];
+        customerName = value.data()!["custName"][widget.index];
+        customerAddress = value.data()!["custAdd"][widget.index];
+        customerCity = value.data()!["custCity"][widget.index];
+        customerState = value.data()!["custState"][widget.index];
+        customerPincode = value.data()!["custPincode"][widget.index];
+        customerEmail = value.data()!["custEmail"][widget.index];
+        customerPhone = value.data()!["custPhone"][widget.index];
+        orderNo = value.data()!["orderNo"][widget.index];
+        paymentMode = value.data()!["paymentMode"][widget.index];
+        choiceOfBusinessCommunication = value.data()!["choice"][widget.index];
+        productName = value.data()!["prodName"][widget.index];
+        productPrice = value.data()!["prodPrice"][widget.index];
+        image = value.data()!["prodImage"][widget.index];
 
-        if(value.data()!["Customer Name"]!= null || value.data()!["Customer Email"]!= null || value.data()!["Customer Phone"]!= null ||
-            value.data()!["Customer Address"]!= null || value.data()!["Customer City"]!= null || value.data()!["Customer State"]!= null ||
-            value.data()!["Customer Pincode"]!= null || value.data()!["Order No"]!= null || value.data()!["Payment Mode"]!= null ||
-            value.data()!["Choice"]!= null || value.data()!["Product Image"]!= null || value.data()!["Product Price"]!= null ||
-            value.data()!["Product Name"]!= null){
+        if(value.data()!["custName"]!= null || value.data()!["custEmail"]!= null || value.data()!["custPhone"]!= null ||
+            value.data()!["custAdd"]!= null || value.data()!["custCity"]!= null || value.data()!["custState"]!= null ||
+            value.data()!["custPincode"]!= null || value.data()!["orderNo"]!= null || value.data()!["paymentMode"]!= null ||
+            value.data()!["choice"]!= null || value.data()!["prodImage"]!= null || value.data()!["prodPrice"]!= null ||
+            value.data()!["prodName"]!= null){
           loading = false;
         }
       });

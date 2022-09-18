@@ -4,21 +4,21 @@ import 'package:xiaomi_hackathon/OnlineMode/MobileScreens/ProductDescription/pro
 import 'cart_button.dart';
 
 class ProductDetails extends StatelessWidget {
-  String name;
-  int discountprice;
-  int price;
-  Map<String,dynamic>imageMap;
-  ProductDetails({required this.name,required this.discountprice,required this.price,required this.imageMap});
+  final String name;
+  final int discountprice;
+  final int price, categoryIndex;
+  final Map<String,dynamic>imageMap;
+  ProductDetails({required this.name,required this.discountprice,required this.price,required this.imageMap, required this.categoryIndex});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,//product.color
+        backgroundColor: Colors.white,//product.color
 
         bottomNavigationBar: CartButton(productName: name, productPrice: discountprice, image: imageMap.values.toList()[0]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
-        body: ProductBody(name: name, discountprice: discountprice, price: price,imageMap: imageMap,)
+        body: ProductBody(categoryIndex: categoryIndex, name: name, discountprice: discountprice, price: price,imageMap: imageMap,)
     );
   }
 

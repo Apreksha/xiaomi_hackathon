@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'HomePage/HomeScreen.dart';
+import 'SplashScreen.dart';
 
 class StoreInformation extends StatefulWidget {
   const StoreInformation({Key? key}) : super(key: key);
@@ -120,7 +121,7 @@ class _StoreInformationState extends State<StoreInformation> {
                       ),),
                   )),
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
+                Navigator.pushReplacement(context, PageTransition(HomeScreen()));
               },
             )
           ],

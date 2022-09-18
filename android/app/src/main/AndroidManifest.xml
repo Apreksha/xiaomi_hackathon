@@ -14,7 +14,7 @@
         </intent>
     </queries>
    <application
-        android:label="xiaomi_hackathon"
+        android:label="Mi Store"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
